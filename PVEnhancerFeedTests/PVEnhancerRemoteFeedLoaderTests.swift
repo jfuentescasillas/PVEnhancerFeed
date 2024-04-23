@@ -1,5 +1,5 @@
 //
-//  PVEnhancerFeedTests.swift
+//  PVEnhancerRemoteFeedLoaderTests.swift
 //  PVEnhancerFeedTests
 //
 //  Created by jfuentescasillas on 23/04/24.
@@ -10,8 +10,8 @@ import XCTest
 import PVEnhancerFeed
 
 
-// MARK: - PVEnhancerFeedTests Class
-final class PVEnhancerFeedTests: XCTestCase {
+// MARK: - PVEnhancerRemoteFeedLoaderTests Class
+final class PVEnhancerRemoteFeedLoaderTests: XCTestCase {
     func test_init_doesNotRequestDataFromURL() {
         let (_, client) = makeSUT()
         
