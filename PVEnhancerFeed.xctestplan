@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "2A29E13E-8923-4772-93D8-C0FBD62B1375",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testExecutionOrdering" : "random"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:PVEnhancerFeed.xcodeproj",
+        "identifier" : "E46B44582BD7B39C00D7197C",
+        "name" : "PVEnhancerFeedTests"
+      }
+    }
+  ],
+  "version" : 1
+}
