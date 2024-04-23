@@ -7,30 +7,7 @@
 
 
 import XCTest
-
-
-// MARK: - RemoteFeedLoader Class
-class RemoteFeedLoader {
-    let url: URL
-    let client: HTTPClientProtocol
-        
-    
-    init(url: URL, client: HTTPClientProtocol) {
-        self.url = url
-        self.client = client
-    }
-    
-    
-    func load() {
-        client.get(from: url)
-    }
-}
-
-
-// MARK: - HTTPClient Protocol
-protocol HTTPClientProtocol {
-    func get(from url: URL)
-}
+import PVEnhancerFeed
 
 
 // MARK: - PVEnhancerFeedTests Class
