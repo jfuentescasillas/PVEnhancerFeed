@@ -10,26 +10,39 @@ import Foundation
 
 
 // MARK: - IrradiancesNASA
-struct IrradiancesFeed: Codable {
+public struct IrradiancesFeed: Codable, Equatable {
     let geometry: Geometry?
     let properties: Properties?
+    
+    
+    public static func == (lhs: IrradiancesFeed, rhs: IrradiancesFeed) -> Bool {
+        // Compare each property for equality
+        let result: Bool = lhs.geometry == rhs.geometry && lhs.properties == rhs.properties
+        
+        return result
+    }
 }
 
 
 // MARK: - Geometry
-struct Geometry: Codable {
+struct Geometry: Codable, Equatable {
     let coordinates: [Double]?
 }
 
 
 // MARK: - Properties
-struct Properties: Codable {
+struct Properties: Codable, Equatable {
     let parameter: Parameter?
+    
+    
+    public static func == (lhs: Properties, rhs: Properties) -> Bool {
+        return lhs.parameter == rhs.parameter
+    }
 }
 
 
 // MARK: - Parameter
-struct Parameter: Codable {
+struct Parameter: Codable, Equatable {
     let allskySfcSwDni: [String: Double]?
     let allskySfcSwDwn: [String: Double]?
     let allskySfcSwDiff: [String: Double]?
