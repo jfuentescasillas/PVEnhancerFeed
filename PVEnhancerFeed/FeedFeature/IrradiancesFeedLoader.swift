@@ -12,7 +12,7 @@ import Foundation
 // MARK: - LoadIrradiancesFeedResult Enum
 enum LoadIrradiancesFeedResult {
     case success([IrradiancesFeed])
-    case error(Error)
+    case error(IrradiancesFeedError)
 }
 
 
