@@ -34,7 +34,7 @@ public class RemoteFeedLoader {
     
     
     public enum Result: Equatable {
-        case success([IrradiancesFeed])
+        case success(IrradiancesFeed)
         case failure(Error)
     }
     
@@ -49,8 +49,8 @@ public class RemoteFeedLoader {
         client.get(from: url) { result in
             switch result {
             case let .success(data, _):
-                if let _ = try? JSONSerialization.jsonObject(with: data) {
-                    completion(.success([]))
+                if let feed = try? JSONDecoder().decode(IrradiancesFeed.self, from: data) {
+                    completion(.success(feed))
                 } else {
                     completion(.failure(.invalidData))
                 }

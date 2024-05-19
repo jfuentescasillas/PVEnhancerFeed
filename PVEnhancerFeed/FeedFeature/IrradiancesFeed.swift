@@ -10,47 +10,58 @@ import Foundation
 
 
 // MARK: - IrradiancesNASA
-public struct IrradiancesFeed: Codable, Equatable {
+public struct IrradiancesFeed: Decodable, Equatable {
     let geometry: Geometry?
     let properties: Properties?
     
     
-    public static func == (lhs: IrradiancesFeed, rhs: IrradiancesFeed) -> Bool {
-        // Compare each property for equality
-        let result: Bool = lhs.geometry == rhs.geometry && lhs.properties == rhs.properties
-        
-        return result
+    public init(geometry: Geometry?, properties: Properties?) {
+        self.geometry = geometry
+        self.properties = properties
     }
 }
 
 
 // MARK: - Geometry
-struct Geometry: Codable, Equatable {
+public struct Geometry: Decodable, Equatable {
     let coordinates: [Double]?
+    
+    
+    public init(coordinates: [Double]?) {
+        self.coordinates = coordinates
+    }
 }
 
 
 // MARK: - Properties
-struct Properties: Codable, Equatable {
+public struct Properties: Decodable, Equatable {
     let parameter: Parameter?
     
     
-    public static func == (lhs: Properties, rhs: Properties) -> Bool {
-        return lhs.parameter == rhs.parameter
+    public init(parameter: Parameter?) {
+        self.parameter = parameter
     }
 }
 
 
 // MARK: - Parameter
-struct Parameter: Codable, Equatable {
+public struct Parameter: Decodable, Equatable {
     let allskySfcSwDni: [String: Double]?
     let allskySfcSwDwn: [String: Double]?
     let allskySfcSwDiff: [String: Double]?
     
-
+    
+    public init(allskySfcSwDni: [String : Double]?, allskySfcSwDwn: [String : Double]?, allskySfcSwDiff: [String : Double]?) {
+        self.allskySfcSwDni = allskySfcSwDni
+        self.allskySfcSwDwn = allskySfcSwDwn
+        self.allskySfcSwDiff = allskySfcSwDiff
+    }
+    
+    
     enum CodingKeys: String, CodingKey {
         case allskySfcSwDni = "ALLSKY_SFC_SW_DNI"
         case allskySfcSwDwn = "ALLSKY_SFC_SW_DWN"
         case allskySfcSwDiff = "ALLSKY_SFC_SW_DIFF"
     }
 }
+
