@@ -53,7 +53,8 @@ final class PVEnhancerRemoteFeedLoaderTests: XCTestCase {
         let samples: [Int] = [199, 201, 300, 400, 500]
         samples.enumerated().forEach { index, code in
             expect(sut, completeWith: .failure(.invalidData), when: {
-                client.complete(withStatusCode: code, at: index)
+                let json = makeItemsJSON(withItem: [:])
+                client.complete(withStatusCode: code, data: json, at: index)
             })
         }
     }
