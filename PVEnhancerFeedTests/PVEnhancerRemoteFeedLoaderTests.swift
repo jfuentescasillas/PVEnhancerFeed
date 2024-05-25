@@ -71,10 +71,10 @@ final class PVEnhancerRemoteFeedLoaderTests: XCTestCase {
     
     func test_load_deliversItemsOn200HTTPResponseWithJSONItems() {
         let (sut, client) = makeSUT()
-
-        let geometry = Geometry(coordinates: [-3.88, 42.63, 917.61])
-        let parameter = Parameter(
-            allskySfcSwDni: [
+        
+        let item1 = makeItem(
+            coordinates: [-3.88, 42.63, 917.61],
+            dni: [
                 "JAN": 2.38,
                 "FEB": 3.1,
                 "MAR": 3.77,
@@ -89,7 +89,7 @@ final class PVEnhancerRemoteFeedLoaderTests: XCTestCase {
                 "DEC": 2.5,
                 "ANN": 4.32
             ],
-            allskySfcSwDwn: [
+            ghi: [
                 "JAN": 1.61,
                 "FEB": 2.46,
                 "MAR": 3.73,
@@ -104,7 +104,7 @@ final class PVEnhancerRemoteFeedLoaderTests: XCTestCase {
                 "DEC": 1.48,
                 "ANN": 4.16
             ],
-            allskySfcSwDiff: [
+            dhi: [
                 "JAN": 0.84,
                 "FEB": 1.2,
                 "MAR": 1.78,
@@ -121,67 +121,8 @@ final class PVEnhancerRemoteFeedLoaderTests: XCTestCase {
             ]
         )
         
-        let properties = Properties(parameter: parameter)
-        let expectedFeed = IrradiancesFeed(geometry: geometry, properties: properties)
-        let json = """
-                {
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [-3.88, 42.63, 917.61]
-                    },
-                    "properties": {
-                        "parameter": {
-                            "ALLSKY_SFC_SW_DNI": {
-                                "JAN": 2.38,
-                                "FEB": 3.1,
-                                "MAR": 3.77,
-                                "APR": 4.12,
-                                "MAY": 4.94,
-                                "JUN": 5.85,
-                                "JUL": 6.97,
-                                "AUG": 6.31,
-                                "SEP": 5.28,
-                                "OCT": 3.87,
-                                "NOV": 2.62,
-                                "DEC": 2.5,
-                                "ANN": 4.32
-                            },
-                            "ALLSKY_SFC_SW_DWN": {
-                                "JAN": 1.61,
-                                "FEB": 2.46,
-                                "MAR": 3.73,
-                                "APR": 4.87,
-                                "MAY": 5.98,
-                                "JUN": 6.71,
-                                "JUL": 7.06,
-                                "AUG": 6.17,
-                                "SEP": 4.75,
-                                "OCT": 3.1,
-                                "NOV": 1.83,
-                                "DEC": 1.48,
-                                "ANN": 4.16
-                            },
-                            "ALLSKY_SFC_SW_DIFF": {
-                                "JAN": 0.84,
-                                "FEB": 1.2,
-                                "MAR": 1.78,
-                                "APR": 2.36,
-                                "MAY": 2.71,
-                                "JUN": 2.73,
-                                "JUL": 2.38,
-                                "AUG": 2.18,
-                                "SEP": 1.82,
-                                "OCT": 1.35,
-                                "NOV": 0.93,
-                                "DEC": 0.74,
-                                "ANN": 1.75
-                            }
-                        }
-                    }
-                }
-                """.data(using: .utf8)!
-        
-        expect(sut, completeWith: .success(expectedFeed), when: {
+        expect(sut, completeWith: .success(item1.model), when: {
+            let json = makeItemsJSON(withItem: item1.json)
             client.complete(withStatusCode: 200, data: json)
         })
     }
@@ -206,6 +147,37 @@ final class PVEnhancerRemoteFeedLoaderTests: XCTestCase {
         let sut = RemoteFeedLoader(url: url, client: client)
         
         return (sut, client)
+    }
+    
+    
+    private func makeItem(coordinates: [Double], dni: [String: Double], ghi: [String: Double], dhi: [String: Double]) -> (model: IrradiancesFeed, json: [String: Any]) {
+        let geometry = Geometry(coordinates: coordinates)
+        let parameter = Parameter(allskySfcSwDni: dni, allskySfcSwDwn: ghi, allskySfcSwDiff: dhi)
+        let properties = Properties(parameter: parameter)
+        let item = IrradiancesFeed(geometry: geometry, properties: properties)
+        
+        let json: [String: Any] = [
+            "geometry": [
+                "type": "Point",
+                "coordinates": coordinates
+            ],
+            "properties": [
+                "parameter": [
+                    "ALLSKY_SFC_SW_DNI": dni,
+                    "ALLSKY_SFC_SW_DWN": ghi,
+                    "ALLSKY_SFC_SW_DIFF": dhi
+                ]
+            ]
+        ]
+        
+        return (item, json)
+    }
+    
+    
+    private func makeItemsJSON(withItem: [String: Any]) -> Data {
+        let json = withItem
+        
+        return try! JSONSerialization.data(withJSONObject: json)
     }
     
     
