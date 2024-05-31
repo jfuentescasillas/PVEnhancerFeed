@@ -61,10 +61,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E46B445A2BD7B39C00D7197C /* PVEnhancerFeedTests */ = {
+		E41F33BA2C09BE4F00BDBFC0 /* FeedAPI */ = {
 			isa = PBXGroup;
 			children = (
 				E46B445B2BD7B39C00D7197C /* PVEnhancerRemoteFeedLoaderTests.swift */,
+			);
+			path = FeedAPI;
+			sourceTree = "<group>";
+		};
+		E46B445A2BD7B39C00D7197C /* PVEnhancerFeedTests */ = {
+			isa = PBXGroup;
+			children = (
+				E41F33BA2C09BE4F00BDBFC0 /* FeedAPI */,
 			);
 			path = PVEnhancerFeedTests;
 			sourceTree = "<group>";
