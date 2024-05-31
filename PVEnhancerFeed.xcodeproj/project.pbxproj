@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E41F33B72C09A4C900BDBFC0 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41F33B62C09A4C900BDBFC0 /* HTTPClient.swift */; };
 		E46B445C2BD7B39C00D7197C /* PVEnhancerRemoteFeedLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46B445B2BD7B39C00D7197C /* PVEnhancerRemoteFeedLoaderTests.swift */; };
 		E46B445D2BD7B39C00D7197C /* PVEnhancerFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E47B1B222BD66F8D008DDA79 /* PVEnhancerFeed.framework */; };
 		E46B44662BD7CCC800D7197C /* RemoteFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46B44652BD7CCC800D7197C /* RemoteFeedLoader.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E41F33B62C09A4C900BDBFC0 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		E46B44592BD7B39C00D7197C /* PVEnhancerFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PVEnhancerFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E46B445B2BD7B39C00D7197C /* PVEnhancerRemoteFeedLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PVEnhancerRemoteFeedLoaderTests.swift; sourceTree = "<group>"; };
 		E46B44632BD7B4AE00D7197C /* PVEnhancerFeed.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = PVEnhancerFeed.xctestplan; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				E46B44652BD7CCC800D7197C /* RemoteFeedLoader.swift */,
+				E41F33B62C09A4C900BDBFC0 /* HTTPClient.swift */,
 			);
 			path = IrradianceFeedAPI;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E48048102BDFF5AE00C06967 /* IrradiancesFeedError.swift in Sources */,
+				E41F33B72C09A4C900BDBFC0 /* HTTPClient.swift in Sources */,
 				E47B1B3E2BD66FF4008DDA79 /* IrradiancesFeedLoader.swift in Sources */,
 				E46B44662BD7CCC800D7197C /* RemoteFeedLoader.swift in Sources */,
 				E47B1B3B2BD66FAA008DDA79 /* IrradiancesFeed.swift in Sources */,
