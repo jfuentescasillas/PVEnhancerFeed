@@ -129,6 +129,21 @@ final class PVEnhancerRemoteFeedLoaderTests: XCTestCase {
     }
     
     
+    func test_load_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
+        let url = URL(string: "http://any-url.com")!
+        let client = HTTPClientSpy()
+        var sut: RemoteFeedLoader? = RemoteFeedLoader(url: url, client: client)
+        var capturedResults = [RemoteFeedLoader.Result]()
+        
+        sut?.load { capturedResults.append($0) }
+        sut = nil
+        
+        client.complete(withStatusCode: 200, data: makeItemsJSON(withItem: [:]))
+        
+        XCTAssertTrue(capturedResults.isEmpty)
+    }
+    
+    
     /* // NOTE: SINCE THE API ALWAYS DELIVERS ITEMS ON A 200 RESPONSE, THIS TEST IS NOT NEEDED. THERE ARE NO RESPONSES SUCH AS 201, 204, 205,...,299, ETC.
      func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
      let (sut, client) = makeSUT()
