@@ -169,7 +169,7 @@ final class PVEnhancerRemoteFeedLoaderTests: XCTestCase {
                     "ALLSKY_SFC_SW_DIFF": dhi // Diffuse Horizontal Irradiance
                 ]
             ]
-        ]
+        ].compactMapValues { $0 }
         
         return (item, json)
     }
