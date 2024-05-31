@@ -164,9 +164,9 @@ final class PVEnhancerRemoteFeedLoaderTests: XCTestCase {
             ],
             "properties": [
                 "parameter": [
-                    "ALLSKY_SFC_SW_DNI": dni,
-                    "ALLSKY_SFC_SW_DWN": ghi,
-                    "ALLSKY_SFC_SW_DIFF": dhi
+                    "ALLSKY_SFC_SW_DNI": dni, // Direct Normal Irradiance
+                    "ALLSKY_SFC_SW_DWN": ghi, // Global Horizontal Irradiance
+                    "ALLSKY_SFC_SW_DIFF": dhi // Diffuse Horizontal Irradiance
                 ]
             ]
         ]
@@ -176,9 +176,7 @@ final class PVEnhancerRemoteFeedLoaderTests: XCTestCase {
     
     
     private func makeItemsJSON(withItem: [String: Any]) -> Data {
-        let json = withItem
-        
-        return try! JSONSerialization.data(withJSONObject: json)
+        return try! JSONSerialization.data(withJSONObject: withItem)
     }
     
     

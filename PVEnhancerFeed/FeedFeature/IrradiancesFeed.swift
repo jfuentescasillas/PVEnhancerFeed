@@ -10,12 +10,12 @@ import Foundation
 
 
 // MARK: - IrradiancesNASA
-public struct IrradiancesFeed: Decodable, Equatable {
-    let geometry: Geometry?
-    let properties: Properties?
+public struct IrradiancesFeed: Equatable {
+    public let geometry: Geometry
+    public let properties: Properties
     
     
-    public init(geometry: Geometry?, properties: Properties?) {
+    public init(geometry: Geometry, properties: Properties) {
         self.geometry = geometry
         self.properties = properties
     }

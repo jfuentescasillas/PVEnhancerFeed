@@ -50,8 +50,8 @@ public class RemoteFeedLoader {
             switch result {
             case let .success(data, response):
                 if response.statusCode == 200,
-                   let feed = try? JSONDecoder().decode(IrradiancesFeed.self, from: data) {
-                    completion(.success(feed))
+                   let root = try? JSONDecoder().decode(Root.self, from: data) {
+                    completion(.success(root.item))
                 } else {
                     completion(.failure(.invalidData))
                 }
@@ -60,5 +60,16 @@ public class RemoteFeedLoader {
                 completion(.failure(.connectivity))
             }
         }
+    }
+}
+
+
+// MARK: - Root
+private struct Root: Decodable {
+    let geometry: Geometry
+    let properties: Properties
+    
+    var item: IrradiancesFeed {
+        return IrradiancesFeed(geometry: geometry, properties: properties)
     }
 }
