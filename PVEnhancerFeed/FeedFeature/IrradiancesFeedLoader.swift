@@ -17,6 +17,6 @@ public enum LoadIrradiancesFeedResult {
 
 
 // MARK: - IrradiancesFeedLoader Protocol
-protocol IrradiancesFeedLoaderProtocol {
+public protocol IrradiancesFeedLoaderProtocol {
     func load(completion: @escaping (LoadIrradiancesFeedResult) -> Void)
 }
