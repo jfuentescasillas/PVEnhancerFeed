@@ -21,10 +21,7 @@ public class RemoteFeedLoader {
     }
     
     
-    public enum Result: Equatable {
-        case success(IrradiancesFeed)
-        case failure(Error)
-    }
+    public typealias Result = LoadIrradiancesFeedResult<Error>
     
     
     public init(url: URL, client: HTTPClientProtocol) {

@@ -10,13 +10,18 @@ import Foundation
 
 
 // MARK: - LoadIrradiancesFeedResult Enum
-enum LoadIrradiancesFeedResult {
-    case success([IrradiancesFeed])
-    case error(IrradiancesFeedError)
+public enum LoadIrradiancesFeedResult<Error: Swift.Error> {
+    case success(IrradiancesFeed)
+    case failure(Error)
 }
+
+
+extension LoadIrradiancesFeedResult: Equatable where Error: Equatable {}
 
 
 // MARK: - IrradiancesFeedLoader Protocol
 protocol IrradiancesFeedLoaderProtocol {
-    func load(completion: @escaping (LoadIrradiancesFeedResult) -> Void)
+    associatedtype Error: Swift.Error
+
+    func load(completion: @escaping (LoadIrradiancesFeedResult<Error>) -> Void)
 }
