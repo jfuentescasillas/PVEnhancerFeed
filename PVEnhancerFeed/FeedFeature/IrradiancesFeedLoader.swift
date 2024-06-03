@@ -16,9 +16,6 @@ public enum LoadIrradiancesFeedResult<Error: Swift.Error> {
 }
 
 
-extension LoadIrradiancesFeedResult: Equatable where Error: Equatable {}
-
-
 // MARK: - IrradiancesFeedLoader Protocol
 protocol IrradiancesFeedLoaderProtocol {
     associatedtype Error: Swift.Error
