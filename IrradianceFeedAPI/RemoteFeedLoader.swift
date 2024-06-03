@@ -21,7 +21,7 @@ public class RemoteFeedLoader: IrradiancesFeedLoaderProtocol {
     }
     
     
-    public typealias Result = LoadIrradiancesFeedResult<Error>
+    public typealias Result = LoadIrradiancesFeedResult
     
     
     public init(url: URL, client: HTTPClientProtocol) {
@@ -39,7 +39,7 @@ public class RemoteFeedLoader: IrradiancesFeedLoaderProtocol {
                 completion(FeedItemsMapper.map(data, from: response))
                 
             case .failure:
-                completion(.failure(.connectivity))
+                completion(.failure(Error.connectivity))
             }
         }
     }
