@@ -10,7 +10,7 @@ import XCTest
 import PVEnhancerFeed
 
 
-class URLSessionHTTPClient {
+class URLSessionHTTPClient: HTTPClientProtocol {
     private let session: URLSession
     
     
@@ -111,10 +111,10 @@ class URLSessionHTTPClientTests: XCTestCase {
     
     
     // MARK: - Helpers
-    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> URLSessionHTTPClient {
+    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> HTTPClientProtocol {
         let sut = URLSessionHTTPClient()
         trackForMemoryLeaks(sut, file: file, line: line)
-       
+        
         return sut
     }
     
@@ -125,8 +125,10 @@ class URLSessionHTTPClientTests: XCTestCase {
         switch result {
         case let .success(data, response):
             return (data, response)
+            
         default:
             XCTFail("Expected success, got \(result) instead", file: file, line: line)
+            
             return nil
         }
     }
@@ -138,10 +140,10 @@ class URLSessionHTTPClientTests: XCTestCase {
         switch result {
         case let .failure(error):
             return error
-       
+            
         default:
             XCTFail("Expected failure, got \(result) instead", file: file, line: line)
-        
+            
             return nil
         }
     }
@@ -163,8 +165,8 @@ class URLSessionHTTPClientTests: XCTestCase {
         
         return receivedResult
     }
-
-     
+    
+    
     private func anyURL() -> URL {
         return URL(string: "http://any-url.com")!
     }
@@ -173,23 +175,23 @@ class URLSessionHTTPClientTests: XCTestCase {
     private func anyData() -> Data {
         return Data("any data".utf8)
     }
-
+    
     
     private func anyNSError() -> NSError {
         return NSError(domain: "any error", code: 0)
     }
-
+    
     
     private func anyHTTPURLResponse() -> HTTPURLResponse {
         return HTTPURLResponse(url: anyURL(), statusCode: 200, httpVersion: nil, headerFields: nil)!
     }
-
+    
     
     private func nonHTTPURLResponse() -> URLResponse {
         return URLResponse(url: anyURL(), mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
     }
-
-        
+    
+    
     private class URLProtocolStub: URLProtocol {
         private static var stub: Stub?
         private static var requestObserver: ((URLRequest) -> Void)?
