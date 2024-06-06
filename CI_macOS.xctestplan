@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "2A29E13E-8923-4772-93D8-C0FBD62B1375",
+      "id" : "FC0EF4D9-19F3-43F6-8B6D-E908C8B3E24F",
       "name" : "Test Scheme Action",
       "options" : {
 
@@ -26,6 +26,13 @@
         "containerPath" : "container:PVEnhancerFeed.xcodeproj",
         "identifier" : "E46B44582BD7B39C00D7197C",
         "name" : "PVEnhancerFeedTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:PVEnhancerFeed.xcodeproj",
+        "identifier" : "E4E3B7042C10B7A600B6DDC7",
+        "name" : "PVEnhancerFeedAPIEndToEndTests"
       }
     }
   ],
