@@ -1,5 +1,5 @@
 //
-//  PVEnhancerRemoteFeedLoaderTests.swift
+//  PVEnhancerRemoteFeedLoaderTests.swift changed name to -> PVEnhancerLoadFeedFromRemoteUseCaseTests.swift
 //  PVEnhancerFeedTests
 //
 //  Created by jfuentescasillas on 23/04/24.
@@ -10,8 +10,8 @@ import XCTest
 import PVEnhancerFeed
 
 
-// MARK: - PVEnhancerRemoteFeedLoaderTests Class
-final class PVEnhancerRemoteFeedLoaderTests: XCTestCase {
+// MARK: - PVEnhancerLoadFeedFromRemoteUseCaseTests Class
+final class PVEnhancerLoadFeedFromRemoteUseCaseTests: XCTestCase {
     func test_init_doesNotRequestDataFromURL() {
         let (_, client) = makeSUT()
         
