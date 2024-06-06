@@ -106,7 +106,7 @@ class PVEnhancerAPIEndToEndTests: XCTestCase {
 
 // MARK: - Extension. XCTestCase
 // This one had to be added because for some reason, it does not detect the extension in the file PVEnhancerFeedTests/Helpers/XCTestCase+MemoryLeakTracking.swift
-extension XCTestCase {
+private extension XCTestCase {
     func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #filePath, line: UInt = #line) {
         addTeardownBlock { [weak instance] in
             XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
