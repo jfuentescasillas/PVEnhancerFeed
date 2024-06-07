@@ -21,9 +21,11 @@ class LocalFeedLoader {
     }
     
     
-    func save(_ item: IrradiancesFeed) {
+    func save(_ item: IrradiancesFeed, completion: @escaping (Error?) -> Void) {
         store.deleteCachedFeed { [weak self] error in
             guard let self else { return }
+            
+            completion(error)
             
             if error == nil {
                 self.store.insert(item, timestamp: self.currentDate())
@@ -82,7 +84,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         let item = uniqueItem()
         let (sut, store) = makeSUT()
         
-        sut.save(item)
+        sut.save(item) { _ in }
         
         XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
     }
@@ -93,7 +95,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         let (sut, store) = makeSUT()
         let deletionError = anyNSError()
         
-        sut.save(item)
+        sut.save(item) { _ in }
         store.completeDeletion(with: deletionError)
         
         XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
@@ -105,10 +107,31 @@ class CacheFeedUseCaseTests: XCTestCase {
         let item = uniqueItem()
         let (sut, store) = makeSUT(currentDate: { timestamp })
         
-        sut.save(item)
+        sut.save(item) { _ in }
         store.completeDeletionSuccessfully()
         
         XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .insert(item, timestamp)])
+    }
+    
+    
+    func test_save_failsOnDeletionError() {
+        let item = uniqueItem()
+        let (sut, store) = makeSUT()
+        let deletionError = anyNSError()
+        let exp = expectation(description: "Wait for save completion")
+        
+        var receivedError: Error?
+        
+        sut.save(item) { error in
+            receivedError = error
+            exp.fulfill()
+        }
+        
+        store.completeDeletion(with: deletionError)
+        
+        wait(for: [exp], timeout: 1)
+        
+        XCTAssertEqual(receivedError as NSError?, deletionError)
     }
     
     
