@@ -10,49 +10,6 @@ import XCTest
 import PVEnhancerFeed
 
 
-class LocalFeedLoader {
-    private let store: FeedStoreProtocol
-    private let currentDate: () -> Date
-    
-    
-    init(store: FeedStoreProtocol, currentDate: @escaping () -> Date) {
-        self.store = store
-        self.currentDate = currentDate
-    }
-    
-    
-    func save(_ item: IrradiancesFeed, completion: @escaping (Error?) -> Void) {
-        store.deleteCachedFeed { [weak self] error in
-            guard let self else { return }
-            
-            if let cacheDeletionError = error {
-                completion(cacheDeletionError)
-            } else {
-                self.cache(item, with: completion)
-            }
-        }
-    }
-    
-    
-    private func cache(_ item: IrradiancesFeed, with completion: @escaping (Error?) -> Void) {
-        store.insert(item, timestamp: currentDate()) { [weak self] error in
-            guard self != nil else { return }
-
-            completion(error)
-        }
-    }
-}
-
-
-protocol FeedStoreProtocol {
-    typealias DeletionCompletion = (Error?) -> Void
-    typealias InsertionCompletion = (Error?) -> Void
-    
-    func deleteCachedFeed(completion: @escaping DeletionCompletion)
-    func insert(_ item: IrradiancesFeed, timestamp: Date, completion: @escaping InsertionCompletion)
-}
-
-
 class CacheFeedUseCaseTests: XCTestCase {
     func test_init_doesNotMessageStoreUponCreation() {
         let (_, store) = makeSUT()
