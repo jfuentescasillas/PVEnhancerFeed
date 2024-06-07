@@ -34,12 +34,11 @@ public final class LocalFeedLoader {
             }
         }
     }
-    
-    
-    private func cache(_ item: IrradiancesFeed, with completion: @escaping (SaveResult) -> Void) {
-        store.insert(item, timestamp: currentDate()) { [weak self] error in
-            guard self != nil else { return }
 
+    private func cache(_ item: IrradiancesFeed, with completion: @escaping (SaveResult) -> Void) {
+        store.insert(item.toLocal(), timestamp: currentDate()) { [weak self] error in
+            guard self != nil else { return }
+            
             completion(error)
         }
     }

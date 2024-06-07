@@ -65,3 +65,10 @@ public struct Parameter: Decodable, Equatable {
     }
 }
 
+
+// MARK: - Extension
+public extension IrradiancesFeed {
+    func toLocal() -> LocalIrradiancesFeedItem {
+        return LocalIrradiancesFeedItem(geometry: geometry, properties: properties)
+    }
+}
