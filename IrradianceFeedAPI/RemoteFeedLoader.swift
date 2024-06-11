@@ -36,11 +36,21 @@ public class RemoteFeedLoader: IrradiancesFeedLoaderProtocol {
             
             switch result {
             case let .success(data, response):
-                completion(FeedItemsMapper.map(data, from: response))
-                
+                completion(RemoteFeedLoader.map(data, from: response))
             case .failure:
                 completion(.failure(Error.connectivity))
             }
+        }
+    }
+    
+    
+    private static func map(_ data: Data, from response: HTTPURLResponse) -> Result {
+        do {
+            let item = try FeedItemsMapper.map(data, from: response)
+         
+            return .success(item.toModel())
+        } catch {
+            return .failure(error)
         }
     }
 }
