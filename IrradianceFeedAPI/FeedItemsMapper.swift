@@ -43,7 +43,6 @@ struct RemoteIrradiancesFeedItem: Decodable {
 // MARK: - FeedItemsMapper
 final class FeedItemsMapper {
     private struct Root: Decodable {
-        let type: String
         let geometry: RemoteIrradiancesFeedItem.RemoteGeometry
         let properties: RemoteIrradiancesFeedItem.RemoteProperties
     }
