@@ -40,6 +40,22 @@ struct RemoteIrradiancesFeedItem: Decodable {
 }
 
 
+extension RemoteIrradiancesFeedItem {
+    func toModel() -> IrradiancesFeed {
+        let model = IrradiancesFeed(
+            geometry: Geometry(coordinates: self.geometry.coordinates),
+            properties: Properties(parameter: Parameter(
+                allskySfcSwDni: self.properties.parameter.allskySfcSwDni,
+                allskySfcSwDwn: self.properties.parameter.allskySfcSwDwn,
+                allskySfcSwDiff: self.properties.parameter.allskySfcSwDiff
+            ))
+        )
+        
+        return model
+    }
+}
+
+
 // MARK: - FeedItemsMapper
 final class FeedItemsMapper {
     private struct Root: Decodable {
@@ -59,21 +75,5 @@ final class FeedItemsMapper {
         }
         
         return RemoteIrradiancesFeedItem(geometry: root.geometry, properties: root.properties)
-    }
-}
-
-
-extension RemoteIrradiancesFeedItem {
-    func toModel() -> IrradiancesFeed {
-        let model = IrradiancesFeed(
-            geometry: Geometry(coordinates: self.geometry.coordinates),
-            properties: Properties(parameter: Parameter(
-                allskySfcSwDni: self.properties.parameter.allskySfcSwDni,
-                allskySfcSwDwn: self.properties.parameter.allskySfcSwDwn,
-                allskySfcSwDiff: self.properties.parameter.allskySfcSwDiff
-            ))
-        )
-        
-        return model
     }
 }
