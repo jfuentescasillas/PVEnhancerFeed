@@ -22,6 +22,13 @@ public struct IrradiancesFeed: Equatable {
 }
 
 
+public extension IrradiancesFeed {
+    func toLocal() -> LocalIrradiancesFeed {
+        return LocalIrradiancesFeed(geometry: geometry, properties: properties)
+    }
+}
+
+
 // MARK: - Geometry
 public struct Geometry: Decodable, Equatable {
     let coordinates: [Double]?
@@ -62,13 +69,5 @@ public struct Parameter: Decodable, Equatable {
         case allskySfcSwDni = "ALLSKY_SFC_SW_DNI"
         case allskySfcSwDwn = "ALLSKY_SFC_SW_DWN"
         case allskySfcSwDiff = "ALLSKY_SFC_SW_DIFF"
-    }
-}
-
-
-// MARK: - Extension
-public extension IrradiancesFeed {
-    func toLocal() -> LocalIrradiancesFeedItem {
-        return LocalIrradiancesFeedItem(geometry: geometry, properties: properties)
     }
 }

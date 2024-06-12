@@ -21,7 +21,7 @@ class CacheFeedUseCaseTests: XCTestCase {
     func test_save_requestsCacheDeletion() {
         let (sut, store) = makeSUT()
         
-        sut.save(uniqueItem().model) { _ in }
+        sut.save(uniqueIrradiancesFeed().model) { _ in }
         
         XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
     }
@@ -31,7 +31,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         let (sut, store) = makeSUT()
         let deletionError = anyNSError()
         
-        sut.save(uniqueItem().model) { _ in }
+        sut.save(uniqueIrradiancesFeed().model) { _ in }
         store.completeDeletion(with: deletionError)
         
         XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
@@ -42,10 +42,10 @@ class CacheFeedUseCaseTests: XCTestCase {
         let timestamp = Date()
         let (sut, store) = makeSUT(currentDate: { timestamp })
         
-        sut.save(uniqueItem().model) { _ in }
+        sut.save(uniqueIrradiancesFeed().model) { _ in }
         store.completeDeletionSuccessfully()
         
-        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .insert(uniqueItem().local, timestamp)])
+        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .insert(uniqueIrradiancesFeed().local, timestamp)])
     }
     
     
@@ -84,7 +84,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         let store = FeedStoreSpy()
         var receivedResults = [LocalFeedLoader.SaveResult]()
         var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
-        sut?.save(uniqueItem().model) { receivedResults.append($0) }
+        sut?.save(uniqueIrradiancesFeed().model) { receivedResults.append($0) }
         
         sut = nil
         store.completeDeletion(with: anyNSError())
@@ -97,7 +97,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         let store = FeedStoreSpy()
         var receivedResults = [LocalFeedLoader.SaveResult]()
         var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
-        sut?.save(uniqueItem().model) { receivedResults.append($0) }
+        sut?.save(uniqueIrradiancesFeed().model) { receivedResults.append($0) }
         
         store.completeDeletionSuccessfully()
         sut = nil
@@ -121,10 +121,9 @@ class CacheFeedUseCaseTests: XCTestCase {
     
     private func expect(_ sut: LocalFeedLoader, toCompleteWithError expectedError: NSError?, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
         let exp = expectation(description: "Wait for save completion")
-        
         var receivedError: Error?
         
-        sut.save(uniqueItem().model) { error in
+        sut.save(uniqueIrradiancesFeed().model) { error in
             receivedError = error
             exp.fulfill()
         }
@@ -140,7 +139,7 @@ class CacheFeedUseCaseTests: XCTestCase {
     private class FeedStoreSpy: FeedStoreProtocol {
         enum ReceivedMessage: Equatable {
             case deleteCachedFeed
-            case insert(LocalIrradiancesFeedItem, Date)
+            case insert(LocalIrradiancesFeed, Date)
         }
         
         
@@ -157,7 +156,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         }
         
         
-        func insert(_ item: LocalIrradiancesFeedItem, timestamp: Date, completion: @escaping InsertionCompletion) {
+        func insert(_ item: LocalIrradiancesFeed, timestamp: Date, completion: @escaping InsertionCompletion) {
             insertionCompletions.append(completion)
             receivedMessages.append(.insert(item, timestamp))
         }
@@ -185,67 +184,8 @@ class CacheFeedUseCaseTests: XCTestCase {
     }
     
     
-    private func uniqueItem() -> IrradiancesFeed {
-        let item = IrradiancesFeed(
-            geometry: Geometry(
-                coordinates: [-3.88, 42.63, 917.61]),
-            properties: Properties(
-                parameter: Parameter(
-                    allskySfcSwDni: [
-                        "JAN": 2.38,
-                        "FEB": 3.1,
-                        "MAR": 3.77,
-                        "APR": 4.12,
-                        "MAY": 4.94,
-                        "JUN": 5.85,
-                        "JUL": 6.97,
-                        "AUG": 6.31,
-                        "SEP": 5.28,
-                        "OCT": 3.87,
-                        "NOV": 2.62,
-                        "DEC": 2.5,
-                        "ANN": 4.32
-                    ],
-                    allskySfcSwDwn: [
-                        "JAN": 1.61,
-                        "FEB": 2.46,
-                        "MAR": 3.73,
-                        "APR": 4.87,
-                        "MAY": 5.98,
-                        "JUN": 6.71,
-                        "JUL": 7.06,
-                        "AUG": 6.17,
-                        "SEP": 4.75,
-                        "OCT": 3.1,
-                        "NOV": 1.83,
-                        "DEC": 1.48,
-                        "ANN": 4.16
-                    ],
-                    allskySfcSwDiff: [
-                        "JAN": 0.84,
-                        "FEB": 1.2,
-                        "MAR": 1.78,
-                        "APR": 2.36,
-                        "MAY": 2.71,
-                        "JUN": 2.73,
-                        "JUL": 2.38,
-                        "AUG": 2.18,
-                        "SEP": 1.82,
-                        "OCT": 1.35,
-                        "NOV": 0.93,
-                        "DEC": 0.74,
-                        "ANN": 1.75
-                    ]
-                )
-            )
-        )
-        
-        return item
-    }
-    
-    
-    private func uniqueItem() -> (model: IrradiancesFeed, local: LocalIrradiancesFeedItem) {
-           let modelItem = IrradiancesFeed(
+    private func uniqueIrradiancesFeed() -> (model: IrradiancesFeed, local: LocalIrradiancesFeed) {
+           let modelIrradiances = IrradiancesFeed(
                geometry: Geometry(
                    coordinates: [-3.88, 42.63, 917.61]),
                properties: Properties(
@@ -299,7 +239,7 @@ class CacheFeedUseCaseTests: XCTestCase {
                )
            )
 
-           let localItem = LocalIrradiancesFeedItem(
+           let localIrradiances = LocalIrradiancesFeed(
                geometry: Geometry(
                    coordinates: [-3.88, 42.63, 917.61]),
                properties: Properties(
@@ -353,7 +293,7 @@ class CacheFeedUseCaseTests: XCTestCase {
                )
            )
 
-           return (modelItem, localItem)
+           return (modelIrradiances, localIrradiances)
        }
     
     

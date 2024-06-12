@@ -14,7 +14,7 @@ class PVEnhancerAPIEndToEndTests: XCTestCase {
     func test_endToEndTestServerGETFeedResult_matchesFixedTestAccountData() {
         switch getFeedResult() {
         case let .success(item)?:
-            XCTAssertEqual(item, expectedItem(), "Expected item to match the fixed test account data")
+            XCTAssertEqual(item, expectedIrradiances(), "Expected item to match the fixed test account data")
             
         case let .failure(error)?:
             XCTFail("Expected successful feed result, got \(error) instead")
@@ -48,7 +48,7 @@ class PVEnhancerAPIEndToEndTests: XCTestCase {
     }
     
     
-    private func expectedItem() -> IrradiancesFeed {
+    private func expectedIrradiances() -> IrradiancesFeed {
         let irradianceFeed = IrradiancesFeed(
             geometry: Geometry(coordinates: [-3.88, 42.63, 917.61]),
             properties: Properties(parameter: Parameter(

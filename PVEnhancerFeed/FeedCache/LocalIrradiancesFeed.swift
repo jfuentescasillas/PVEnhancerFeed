@@ -1,5 +1,5 @@
 //
-//  LocalIrradiancesFeedItem.swift
+//  LocalIrradiancesFeed.swift
 //  PVEnhancerFeed
 //
 //  Created by jfuentescasillas on 12/06/2024.
@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct LocalIrradiancesFeedItem: Equatable {
+public struct LocalIrradiancesFeed: Equatable {
     public let geometry: Geometry
     public let properties: Properties
 
