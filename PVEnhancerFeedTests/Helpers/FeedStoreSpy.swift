@@ -13,7 +13,8 @@ import PVEnhancerFeed
 class FeedStoreSpy: FeedStoreProtocol {
     enum ReceivedMessage: Equatable {
         case deleteCachedFeed
-        case insert(LocalIrradiancesFeed, Date)
+        case insert(LocalIrradiancesFeed, Date)      
+        case retrieve
     }
     
     
@@ -52,5 +53,10 @@ class FeedStoreSpy: FeedStoreProtocol {
     
     func completeInsertionSuccessfully(at index: Int = 0) {
         insertionCompletions[index](nil)
+    }
+    
+    
+    func retrieve() {
+        receivedMessages.append(.retrieve)
     }
 }

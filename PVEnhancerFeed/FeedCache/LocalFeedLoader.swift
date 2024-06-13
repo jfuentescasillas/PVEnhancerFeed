@@ -34,6 +34,11 @@ public final class LocalFeedLoader {
             }
         }
     }
+    
+    
+    public func load() {
+        store.retrieve()
+    }
 
     
     private func cache(_ item: IrradiancesFeed, with completion: @escaping (SaveResult) -> Void) {
