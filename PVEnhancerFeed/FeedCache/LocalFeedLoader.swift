@@ -49,10 +49,7 @@ public final class LocalFeedLoader {
             case let .found(feed, timestamp) where self.validate(timestamp):
                 completion(.success(feed.toModel()))
 
-            case .found:
-                completion(.success(IrradiancesFeed(geometry: .empty, properties: .empty)))
-                
-            case .empty:
+            case .found, .empty:
                 completion(.success(IrradiancesFeed(geometry: .empty, properties: .empty)))
             }
         }
