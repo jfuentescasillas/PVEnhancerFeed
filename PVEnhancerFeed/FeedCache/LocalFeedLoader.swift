@@ -38,10 +38,15 @@ public final class LocalFeedLoader {
     
     
     public func load(completion: @escaping (LoadResult) -> Void) {
-        store.retrieve { error in
-            if let error {
+        store.retrieve { result in
+            switch result {
+            case let .failure(error):
                 completion(.failure(error))
-            } else {
+                
+            case let .found(feed, _):
+                completion(.success(feed.toModel()))
+
+            case .empty:
                 completion(.success(IrradiancesFeed(geometry: .empty, properties: .empty)))
             }
         }

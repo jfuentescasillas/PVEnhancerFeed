@@ -19,3 +19,20 @@ public struct LocalIrradiancesFeed: Equatable {
         self.properties = properties
     }
 }
+
+
+public extension LocalIrradiancesFeed {
+    func toModel() -> IrradiancesFeed {
+        let model = IrradiancesFeed(
+            geometry: Geometry(coordinates: self.geometry.coordinates),
+            properties: Properties(parameter: Parameter(
+                allskySfcSwDni: self.properties.parameter?.allskySfcSwDni,
+                allskySfcSwDwn: self.properties.parameter?.allskySfcSwDwn,
+                allskySfcSwDiff: self.properties.parameter?.allskySfcSwDiff
+            ))
+        )
+        
+        return model
+    }
+}
+
