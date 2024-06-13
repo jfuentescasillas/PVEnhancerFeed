@@ -50,7 +50,6 @@ public final class LocalFeedLoader {
                 completion(.success(feed.toModel()))
 
             case .found:
-                self.store.deleteCachedFeed(completion: { _ in })
                 completion(.success(IrradiancesFeed(geometry: .empty, properties: .empty)))
                 
             case .empty:
@@ -68,7 +67,10 @@ public final class LocalFeedLoader {
             case .failure:
                 self.store.deleteCachedFeed { _ in }
           
-            default: break
+            case let .found(_, timestamp) where !self.validate(timestamp):
+                self.store.deleteCachedFeed { _ in }
+                
+            case .empty, .found: break
             }
         }
     }
