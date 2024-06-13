@@ -56,6 +56,17 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
     }
     
     
+    func test_load_deliversNoIrradiancesOnSevenDaysOldCache() {
+        let fixedCurrentDate = Date()
+        let sevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7)
+        let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
+        
+        expect(sut, toCompleteWith: .success(IrradiancesFeed(geometry: .empty, properties: .empty)), when: {
+            store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: sevenDaysOldTimestamp)
+        })
+    }
+    
+    
     // MARK: - Helpers
     private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
         let store = FeedStoreSpy()
