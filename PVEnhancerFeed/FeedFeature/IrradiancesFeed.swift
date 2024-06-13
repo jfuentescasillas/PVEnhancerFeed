@@ -37,6 +37,11 @@ public struct Geometry: Decodable, Equatable {
     public init(coordinates: [Double]?) {
         self.coordinates = coordinates
     }
+    
+    
+    public static var empty: Geometry {
+        return Geometry(coordinates: [])
+    }
 }
 
 
@@ -47,6 +52,11 @@ public struct Properties: Decodable, Equatable {
     
     public init(parameter: Parameter?) {
         self.parameter = parameter
+    }
+    
+    
+    public static var empty: Properties {
+        return Properties(parameter: Parameter.empty)
     }
 }
 
@@ -69,5 +79,10 @@ public struct Parameter: Decodable, Equatable {
         case allskySfcSwDni = "ALLSKY_SFC_SW_DNI"
         case allskySfcSwDwn = "ALLSKY_SFC_SW_DWN"
         case allskySfcSwDiff = "ALLSKY_SFC_SW_DIFF"
+    }
+    
+    
+    public static var empty: Parameter {
+        return Parameter(allskySfcSwDni: [:], allskySfcSwDwn: [:], allskySfcSwDiff: [:])
     }
 }

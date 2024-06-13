@@ -52,8 +52,33 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
     }
     
     
+    func test_load_deliversNoIrradiancesOnEmptyCache() {
+        let (sut, store) = makeSUT()
+        let exp = expectation(description: "Wait for load completion")
+        var receivedFeed: IrradiancesFeed?
+        
+        sut.load { result in
+            switch result {
+            case let .success(feed):
+                receivedFeed = feed
+            
+            default:
+                XCTFail("Expected success, got \(result) instead")
+            }
+            
+            exp.fulfill()
+        }
+        
+        store.completeRetrievalWithEmptyCache()
+        
+        wait(for: [exp], timeout: 1)
+        
+        XCTAssertEqual(receivedFeed, IrradiancesFeed(geometry: .empty, properties: .empty))
+    }
+    
+    
     // MARK: - Helpers
-    private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
+    private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
         let store = FeedStoreSpy()
         let sut = LocalFeedLoader(store: store, currentDate: currentDate)
         
