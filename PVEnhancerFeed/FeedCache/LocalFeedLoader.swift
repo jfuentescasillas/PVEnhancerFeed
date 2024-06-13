@@ -15,6 +15,7 @@ public final class LocalFeedLoader {
     
     
     public typealias SaveResult = Error?
+    public typealias LoadResult = LoadIrradiancesFeedResult
     
     
     public init(store: FeedStoreProtocol, currentDate: @escaping () -> Date) {
@@ -36,8 +37,12 @@ public final class LocalFeedLoader {
     }
     
     
-    public func load(completion: @escaping (Error?) -> Void) {
-        store.retrieve(completion: completion)
+    public func load(completion: @escaping (LoadResult) -> Void) {
+        store.retrieve { error in
+            if let error {
+                completion(.failure(error))
+            }
+        }
     }
 
     
