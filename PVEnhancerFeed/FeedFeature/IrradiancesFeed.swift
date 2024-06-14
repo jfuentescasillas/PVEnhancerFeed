@@ -30,7 +30,7 @@ public extension IrradiancesFeed {
 
 
 // MARK: - Geometry
-public struct Geometry: Decodable, Equatable {
+public struct Geometry: Codable, Equatable {
     let coordinates: [Double]?
     
     
@@ -46,7 +46,7 @@ public struct Geometry: Decodable, Equatable {
 
 
 // MARK: - Properties
-public struct Properties: Decodable, Equatable {
+public struct Properties: Codable, Equatable {
     let parameter: Parameter?
     
     
@@ -62,7 +62,7 @@ public struct Properties: Decodable, Equatable {
 
 
 // MARK: - Parameter
-public struct Parameter: Decodable, Equatable {
+public struct Parameter: Codable, Equatable {
     let allskySfcSwDni: [String: Double]?
     let allskySfcSwDwn: [String: Double]?
     let allskySfcSwDiff: [String: Double]?

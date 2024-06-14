@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct LocalIrradiancesFeed: Equatable {
+public struct LocalIrradiancesFeed: Equatable, Codable {
     public let geometry: Geometry
     public let properties: Properties
 
@@ -35,4 +35,3 @@ public extension LocalIrradiancesFeed {
         return model
     }
 }
-

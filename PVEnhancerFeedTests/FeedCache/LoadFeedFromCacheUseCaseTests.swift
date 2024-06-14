@@ -177,8 +177,8 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         
         sut.load { receivedResult in
             switch (receivedResult, expectedResult) {
-            case let (.success(receivedImages), .success(expectedImages)):
-                XCTAssertEqual(receivedImages, expectedImages, file: file, line: line)
+            case let (.success(receivedIrradiances), .success(expectedIrradiances)):
+                XCTAssertEqual(receivedIrradiances, expectedIrradiances, file: file, line: line)
                 
             case let (.failure(receivedError as NSError), .failure(expectedError as NSError)):
                 XCTAssertEqual(receivedError, expectedError, file: file, line: line)
