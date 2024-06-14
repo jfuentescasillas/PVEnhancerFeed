@@ -13,8 +13,29 @@ import PVEnhancerFeed
 // MARK: - Class CodableFeedStore
 class CodableFeedStore {
     private struct Cache: Codable {
-        let feed: LocalIrradiancesFeed
+        let feed: CodableIrradiancesFeed
         let timestamp: Date
+        
+        var localFeed: LocalIrradiancesFeed {
+            return feed.local
+        }
+    }
+    
+    
+    private struct CodableIrradiancesFeed: Codable {
+        private let geometry: Geometry
+        private let properties: Properties
+
+        
+        init(_ feed: LocalIrradiancesFeed) {
+            self.geometry = feed.geometry
+            self.properties = feed.properties
+        }
+        
+
+        var local: LocalIrradiancesFeed {
+            return LocalIrradiancesFeed(geometry: geometry, properties: properties)
+        }
     }
 
         
@@ -29,13 +50,14 @@ class CodableFeedStore {
         let decoder = JSONDecoder()
         let cache = try! decoder.decode(Cache.self, from: data)
         
-        completion(.found(feed: cache.feed, timestamp: cache.timestamp))
+        completion(.found(feed: cache.localFeed, timestamp: cache.timestamp))
     }
     
    
     func insert(_ feed: LocalIrradiancesFeed, timestamp: Date, completion: @escaping FeedStoreProtocol.InsertionCompletion) {
         let encoder = JSONEncoder()
-        let encoded = try! encoder.encode(Cache(feed: feed, timestamp: timestamp))
+        let cache = Cache(feed: CodableIrradiancesFeed(feed), timestamp: timestamp)
+        let encoded = try! encoder.encode(cache)
         
         try! encoded.write(to: storeURL)
         

@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct LocalIrradiancesFeed: Equatable, Codable {
+public struct LocalIrradiancesFeed: Equatable {
     public let geometry: Geometry
     public let properties: Properties
 
