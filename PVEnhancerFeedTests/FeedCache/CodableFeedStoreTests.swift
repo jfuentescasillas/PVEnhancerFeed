@@ -11,7 +11,7 @@ import PVEnhancerFeed
 
 
 // MARK: - Class CodableFeedStore
-class CodableFeedStore {
+class CodableFeedStore: FeedStoreProtocol {
     private struct Cache: Codable {
         let feed: CodableIrradiancesFeed
         let timestamp: Date
@@ -47,7 +47,7 @@ class CodableFeedStore {
     }
     
     
-    func retrieve(completion: @escaping FeedStoreProtocol.RetrievalCompletion) {
+    func retrieve(completion: @escaping RetrievalCompletion) {
         guard let data = try? Data(contentsOf: storeURL) else {
             return completion(.empty)
         }
@@ -63,7 +63,7 @@ class CodableFeedStore {
     }
     
     
-    func insert(_ feed: LocalIrradiancesFeed, timestamp: Date, completion: @escaping FeedStoreProtocol.InsertionCompletion) {
+    func insert(_ feed: LocalIrradiancesFeed, timestamp: Date, completion: @escaping InsertionCompletion) {
         do {
             let encoder = JSONEncoder()
             let cache = Cache(feed: CodableIrradiancesFeed(feed), timestamp: timestamp)
@@ -77,7 +77,7 @@ class CodableFeedStore {
     }
     
     
-    func deleteCachedFeed(completion: @escaping FeedStoreProtocol.DeletionCompletion) {
+    func deleteCachedFeed(completion: @escaping DeletionCompletion) {
         guard FileManager.default.fileExists(atPath: storeURL.path) else {
             return completion(nil)
         }
