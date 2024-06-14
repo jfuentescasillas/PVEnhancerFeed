@@ -9,24 +9,21 @@
 import Foundation
 
 
+// MARK: - RetrieveCachedFeedResult
+public enum RetrieveCachedFeedResult {
+    case empty
+    case found(feed: LocalIrradiancesFeed, timestamp: Date)
+    case failure(Error)
+}
+
+
 // MARK: - FeedStoreProtocol
 public protocol FeedStoreProtocol {
     typealias DeletionCompletion = (Error?) -> Void
     typealias InsertionCompletion = (Error?) -> Void
-    
+    typealias RetrievalCompletion = (RetrieveCachedFeedResult) -> Void
+
     func deleteCachedFeed(completion: @escaping DeletionCompletion)
-    func insert(_ item: LocalIrradiancesFeedItem, timestamp: Date, completion: @escaping InsertionCompletion)
-}
-
-
-// MARK: - LocalIrradiancesFeedItem
-public struct LocalIrradiancesFeedItem: Equatable {
-    public let geometry: Geometry
-    public let properties: Properties
-
-    
-    public init(geometry: Geometry, properties: Properties) {
-        self.geometry = geometry
-        self.properties = properties
-    }
+    func insert(_ item: LocalIrradiancesFeed, timestamp: Date, completion: @escaping InsertionCompletion)
+    func retrieve(completion: @escaping RetrievalCompletion)
 }
