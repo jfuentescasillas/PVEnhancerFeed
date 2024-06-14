@@ -9,14 +9,13 @@
 import Foundation
 
 
-public final class LocalFeedLoader {
-    private let store: FeedStoreProtocol
+// MARK: - Class. FeedCachePolicy
+public final class FeedCachePolicy {
     private let currentDate: () -> Date
     private let calendar = Calendar(identifier: .gregorian)
     
     
-    public init(store: FeedStoreProtocol, currentDate: @escaping () -> Date) {
-        self.store = store
+    init(currentDate: @escaping () -> Date) {
         self.currentDate = currentDate
     }
     
@@ -26,7 +25,7 @@ public final class LocalFeedLoader {
     }
     
     
-    private func validate(_ timestamp: Date) -> Bool {
+    func validate(_ timestamp: Date) -> Bool {
         let calendar = Calendar(identifier: .gregorian)
         
         guard let maxCacheAge = calendar.date(byAdding: .day, value: maxCacheAgeInDays, to: timestamp) else {
@@ -36,8 +35,23 @@ public final class LocalFeedLoader {
         return currentDate() < maxCacheAge
     }
 }
+
+
+// MARK: - Class. LocalFeedLoader
+public final class LocalFeedLoader {
+    private let store: FeedStoreProtocol
+    private let currentDate: () -> Date
+    private let cachePolicy: FeedCachePolicy
     
- 
+    
+    public init(store: FeedStoreProtocol, currentDate: @escaping () -> Date) {
+        self.store = store
+        self.currentDate = currentDate
+        self.cachePolicy = FeedCachePolicy(currentDate: currentDate)
+    }
+}
+
+
 // MARK: - Extension. Save & Cache
 extension LocalFeedLoader {
     public typealias SaveResult = Error?
@@ -64,7 +78,7 @@ extension LocalFeedLoader {
         }
     }
 }
- 
+
 
 // MARK: - Extension. Load
 extension LocalFeedLoader: IrradiancesFeedLoaderProtocol {
@@ -79,16 +93,16 @@ extension LocalFeedLoader: IrradiancesFeedLoaderProtocol {
             case let .failure(error):
                 completion(.failure(error))
                 
-            case let .found(feed, timestamp) where self.validate(timestamp):
+            case let .found(feed, timestamp) where self.cachePolicy.validate(timestamp):
                 completion(.success(feed.toModel()))
-
+                
             case .found, .empty:
                 completion(.success(IrradiancesFeed(geometry: .empty, properties: .empty)))
             }
         }
     }
 }
- 
+
 
 // MARK: - Extension. validateCache
 extension LocalFeedLoader {
@@ -99,8 +113,8 @@ extension LocalFeedLoader {
             switch result {
             case .failure:
                 self.store.deleteCachedFeed { _ in }
-          
-            case let .found(_, timestamp) where !self.validate(timestamp):
+                
+            case let .found(_, timestamp) where !self.cachePolicy.validate(timestamp):
                 self.store.deleteCachedFeed { _ in }
                 
             case .empty, .found: break
