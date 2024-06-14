@@ -39,37 +39,37 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
     }
     
     
-    func test_validateCache_doesNotDeleteLessThanSevenDaysOldCache() {
+    func test_validateCache_doesNotDeleteNonExpiredCache() {
         let fixedCurrentDate = Date()
-        let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: 1)
+        let nonExpiredTimestamp = fixedCurrentDate.minusFeedCacheMaxAge().adding(seconds: 1)
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
         
         sut.validateCache()
-        store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: lessThanSevenDaysOldTimestamp)
+        store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: nonExpiredTimestamp)
         
         XCTAssertEqual(store.receivedIrradiances, [.retrieve])
     }
     
     
-    func test_validateCache_deletesSevenDaysOldCache() {
+    func test_validateCache_deletesCacheOnExpiration() {
         let fixedCurrentDate = Date()
-        let sevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7)
+        let expirationTimestamp = fixedCurrentDate.minusFeedCacheMaxAge()
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
         
         sut.validateCache()
-        store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: sevenDaysOldTimestamp)
+        store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: expirationTimestamp)
         
         XCTAssertEqual(store.receivedIrradiances, [.retrieve, .deleteCachedFeed])
     }
     
     
-    func test_validateCache_deletesMoreThanSevenDaysOldCache() {
+    func test_validateCache_deletesExpiredCache() {
         let fixedCurrentDate = Date()
-        let moreThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: -1)
+        let expiredTimestamp = fixedCurrentDate.minusFeedCacheMaxAge().adding(seconds: -1)
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
         
         sut.validateCache()
-        store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: moreThanSevenDaysOldTimestamp)
+        store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: expiredTimestamp)
         
         XCTAssertEqual(store.receivedIrradiances, [.retrieve, .deleteCachedFeed])
     }

@@ -45,35 +45,35 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
     }
     
     
-    func test_load_deliversCachedIrradiancesOnLessThanSevenDaysOldCache() {
+    func test_load_deliversCachedIrradiancesOnNonExpiredCache() {
         let fixedCurrentDate = Date()
-        let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: 1)
+        let nonExpiredTimestamp = fixedCurrentDate.minusFeedCacheMaxAge().adding(seconds: 1)
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
         
         expect(sut, toCompleteWith: .success(uniqueIrradiancesFeed().model), when: {
-            store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: lessThanSevenDaysOldTimestamp)
+            store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: nonExpiredTimestamp)
         })
     }
     
     
-    func test_load_deliversNoIrradiancesOnSevenDaysOldCache() {
+    func test_load_deliversNoIrradiancesOnCacheExpiration() {
         let fixedCurrentDate = Date()
-        let sevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7)
+        let expirationTimestamp = fixedCurrentDate.minusFeedCacheMaxAge()
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
         
         expect(sut, toCompleteWith: .success(IrradiancesFeed(geometry: .empty, properties: .empty)), when: {
-            store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: sevenDaysOldTimestamp)
+            store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: expirationTimestamp)
         })
     }
     
     
-    func test_load_deliversNoIrradiancesOnMoreThanSevenDaysOldCache() {
+    func test_load_deliversNoIrradiancesOnExpiredCache() {
         let fixedCurrentDate = Date()
-        let moreThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: -1)
+        let expiredTimestamp = fixedCurrentDate.minusFeedCacheMaxAge().adding(seconds: -1)
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
         
         expect(sut, toCompleteWith: .success(IrradiancesFeed(geometry: .empty, properties: .empty)), when: {
-            store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: moreThanSevenDaysOldTimestamp)
+            store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: expiredTimestamp)
         })
     }
     
@@ -98,25 +98,25 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
     }
     
     
-    func test_load_hasNoSideEffectsOnLessThanSevenDaysOldCache() {
+    func test_load_hasNoSideEffectsOnNonExpiredCache() {
         let fixedCurrentDate = Date()
-        let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: 1)
+        let nonExpiredTimestamp = fixedCurrentDate.minusFeedCacheMaxAge().adding(seconds: 1)
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
         
         sut.load { _ in }
-        store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: lessThanSevenDaysOldTimestamp)
+        store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: nonExpiredTimestamp)
         
         XCTAssertEqual(store.receivedIrradiances, [.retrieve])
     }
     
     
-    func test_load_hasNoSideEffectsOnSevenDaysOldCache() {
+    func test_load_hasNoSideEffectsOnCacheExpiration() {
         let fixedCurrentDate = Date()
-        let sevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7)
+        let expirationTimestamp = fixedCurrentDate.minusFeedCacheMaxAge()
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
         
         sut.load { _ in }
-        store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: sevenDaysOldTimestamp)
+        store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: expirationTimestamp)
         
         XCTAssertEqual(store.receivedIrradiances, [.retrieve])
     }
