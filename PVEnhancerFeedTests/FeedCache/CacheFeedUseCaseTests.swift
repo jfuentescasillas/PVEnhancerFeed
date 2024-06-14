@@ -14,7 +14,7 @@ class CacheFeedUseCaseTests: XCTestCase {
     func test_init_doesNotMessageStoreUponCreation() {
         let (_, store) = makeSUT()
         
-        XCTAssertEqual(store.receivedMessages, [])
+        XCTAssertEqual(store.receivedIrradiances, [])
     }
     
     
@@ -23,7 +23,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         
         sut.save(uniqueIrradiancesFeed().model) { _ in }
         
-        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
+        XCTAssertEqual(store.receivedIrradiances, [.deleteCachedFeed])
     }
     
     
@@ -34,7 +34,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         sut.save(uniqueIrradiancesFeed().model) { _ in }
         store.completeDeletion(with: deletionError)
         
-        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
+        XCTAssertEqual(store.receivedIrradiances, [.deleteCachedFeed])
     }
     
     
@@ -45,7 +45,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         sut.save(uniqueIrradiancesFeed().model) { _ in }
         store.completeDeletionSuccessfully()
         
-        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .insert(uniqueIrradiancesFeed().local, timestamp)])
+        XCTAssertEqual(store.receivedIrradiances, [.deleteCachedFeed, .insert(uniqueIrradiancesFeed().local, timestamp)])
     }
     
     

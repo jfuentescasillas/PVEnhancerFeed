@@ -15,7 +15,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
     func test_init_doesNotMessageStoreUponCreation() {
         let (_, store) = makeSUT()
         
-        XCTAssertEqual(store.receivedMessages, [])
+        XCTAssertEqual(store.receivedIrradiances, [])
     }
     
     
@@ -25,7 +25,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
         sut.validateCache()
         store.completeRetrieval(with: anyNSError())
         
-        XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
+        XCTAssertEqual(store.receivedIrradiances, [.retrieve, .deleteCachedFeed])
     }
     
     
@@ -35,7 +35,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
         sut.validateCache()
         store.completeRetrievalWithEmptyCache()
         
-        XCTAssertEqual(store.receivedMessages, [.retrieve])
+        XCTAssertEqual(store.receivedIrradiances, [.retrieve])
     }
     
     
@@ -47,7 +47,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
         sut.validateCache()
         store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: lessThanSevenDaysOldTimestamp)
         
-        XCTAssertEqual(store.receivedMessages, [.retrieve])
+        XCTAssertEqual(store.receivedIrradiances, [.retrieve])
     }
     
     
@@ -59,7 +59,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
         sut.validateCache()
         store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: sevenDaysOldTimestamp)
         
-        XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
+        XCTAssertEqual(store.receivedIrradiances, [.retrieve, .deleteCachedFeed])
     }
     
     
@@ -71,7 +71,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
         sut.validateCache()
         store.completeRetrieval(with: uniqueIrradiancesFeed().local, timestamp: moreThanSevenDaysOldTimestamp)
         
-        XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
+        XCTAssertEqual(store.receivedIrradiances, [.retrieve, .deleteCachedFeed])
     }
     
     
@@ -83,7 +83,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
         sut = nil
         store.completeRetrieval(with: anyNSError())
         
-        XCTAssertEqual(store.receivedMessages, [.retrieve])
+        XCTAssertEqual(store.receivedIrradiances, [.retrieve])
     }
     
     
