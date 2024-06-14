@@ -19,6 +19,7 @@
 		E451A99D2C13261400AA1414 /* LocalFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451A99C2C13261400AA1414 /* LocalFeedLoader.swift */; };
 		E451A99F2C13269200AA1414 /* FeedStoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451A99E2C13269200AA1414 /* FeedStoreProtocol.swift */; };
 		E45A40B72C1C54C80039471B /* CodableFeedStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45A40B62C1C54C80039471B /* CodableFeedStoreTests.swift */; };
+		E45A40B92C1C84FF0039471B /* CodableFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45A40B82C1C84FF0039471B /* CodableFeedStore.swift */; };
 		E46B445C2BD7B39C00D7197C /* PVEnhancerLoadFeedFromRemoteUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46B445B2BD7B39C00D7197C /* PVEnhancerLoadFeedFromRemoteUseCaseTests.swift */; };
 		E46B445D2BD7B39C00D7197C /* PVEnhancerFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E47B1B222BD66F8D008DDA79 /* PVEnhancerFeed.framework */; };
 		E46B44662BD7CCC800D7197C /* RemoteFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46B44652BD7CCC800D7197C /* RemoteFeedLoader.swift */; };
@@ -65,6 +66,7 @@
 		E451A99C2C13261400AA1414 /* LocalFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedLoader.swift; sourceTree = "<group>"; };
 		E451A99E2C13269200AA1414 /* FeedStoreProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStoreProtocol.swift; sourceTree = "<group>"; };
 		E45A40B62C1C54C80039471B /* CodableFeedStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFeedStoreTests.swift; sourceTree = "<group>"; };
+		E45A40B82C1C84FF0039471B /* CodableFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFeedStore.swift; sourceTree = "<group>"; };
 		E46B44592BD7B39C00D7197C /* PVEnhancerFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PVEnhancerFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E46B445B2BD7B39C00D7197C /* PVEnhancerLoadFeedFromRemoteUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PVEnhancerLoadFeedFromRemoteUseCaseTests.swift; sourceTree = "<group>"; };
 		E46B44632BD7B4AE00D7197C /* PVEnhancerFeed.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = PVEnhancerFeed.xctestplan; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				E451A99E2C13269200AA1414 /* FeedStoreProtocol.swift */,
 				E451A99C2C13261400AA1414 /* LocalFeedLoader.swift */,
 				E4B3D6382C1978590019CA60 /* LocalIrradiancesFeed.swift */,
+				E45A40B82C1C84FF0039471B /* CodableFeedStore.swift */,
 			);
 			path = FeedCache;
 			sourceTree = "<group>";
@@ -398,6 +401,7 @@
 				E41F33B92C09A53C00BDBFC0 /* FeedItemsMapper.swift in Sources */,
 				E46B44662BD7CCC800D7197C /* RemoteFeedLoader.swift in Sources */,
 				E4B3D6392C1978590019CA60 /* LocalIrradiancesFeed.swift in Sources */,
+				E45A40B92C1C84FF0039471B /* CodableFeedStore.swift in Sources */,
 				E4F5D10C2C1C412000535B54 /* FeedCachePolicy.swift in Sources */,
 				E451A99D2C13261400AA1414 /* LocalFeedLoader.swift in Sources */,
 				E4B3D6372C1977140019CA60 /* RemoteIrradiancesFeedItem.swift in Sources */,
