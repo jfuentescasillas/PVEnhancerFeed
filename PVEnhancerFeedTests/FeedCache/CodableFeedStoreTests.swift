@@ -102,19 +102,15 @@ class CodableFeedStoreTests: XCTestCase {
     
     
     func test_retrieveAfterInsertingToEmptyCache_deliversInsertedValues() {
+        // Given
         let sut = makeSUT()
         let feed = uniqueIrradiancesFeed().local
         let timestamp = Date()
-        let exp = expectation(description: "Wait for cache retrieval")
         
-        sut.insert(feed, timestamp: timestamp) { insertionError in
-            XCTAssertNil(insertionError, "Expected feed to be inserted successfully")
-            
-            exp.fulfill()
-        }
+        // Then
+        insert((feed, timestamp), to: sut)
         
-        wait(for: [exp], timeout: 1)
-        
+        // Assert
         expect(sut, toRetrieve: .found(feed: feed, timestamp: timestamp))
     }
     
@@ -126,16 +122,9 @@ class CodableFeedStoreTests: XCTestCase {
         let timestamp = Date()
         
         // Then
-        let exp = expectation(description: "Wait for cache insertion")
+        insert((feed, timestamp), to: sut)
         
-        sut.insert(feed, timestamp: timestamp) { insertionError in
-            XCTAssertNil(insertionError, "Expected feed to be inserted successfully")
-
-            exp.fulfill()
-        }
-
-        wait(for: [exp], timeout: 1)
-        
+        // Assert
         expect(sut, toRetrieveTwice: .found(feed: feed, timestamp: timestamp))
     }
 
@@ -149,6 +138,18 @@ class CodableFeedStoreTests: XCTestCase {
         return sut
     }
 
+    
+    private func insert(_ cache: (feed: LocalIrradiancesFeed, timestamp: Date), to sut: CodableFeedStore) {
+        let exp = expectation(description: "Wait for cache insertion")
+       
+        sut.insert(cache.feed, timestamp: cache.timestamp) { insertionError in
+            XCTAssertNil(insertionError, "Expected feed to be inserted successfully")
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1.0)
+    }
+    
     
     private func expect(_ sut: CodableFeedStore, toRetrieve expectedResult: RetrieveCachedFeedResult, file: StaticString = #filePath, line: UInt = #line) {
         let exp = expectation(description: "Wait for cache retrieval")
