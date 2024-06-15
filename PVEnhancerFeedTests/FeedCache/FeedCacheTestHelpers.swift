@@ -123,13 +123,25 @@ func uniqueIrradiancesFeed() -> (model: IrradiancesFeed, local: LocalIrradiances
    }
 
 
-// MARK: - Extension. Date.
+// MARK: - Extensions. Date.
 extension Date {
-    func adding(days: Int) -> Date {
-        return Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
+    private var feedCacheMaxAgeInDays: Int {
+        return 7
     }
     
     
+    func minusFeedCacheMaxAge() -> Date {
+        return adding(days: -feedCacheMaxAgeInDays)
+    }
+    
+    
+    func adding(days: Int) -> Date {
+        return Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
+    }
+}
+
+
+extension Date {
     func adding(seconds: TimeInterval) -> Date {
         return self + seconds
     }
