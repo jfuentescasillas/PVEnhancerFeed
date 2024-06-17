@@ -154,6 +154,7 @@
 		E451A99B2C13260600AA1414 /* FeedCache */ = {
 			isa = PBXGroup;
 			children = (
+				E49C007F2C20A115003E914A /* Infrastructure */,
 				E4F5D10B2C1C412000535B54 /* FeedCachePolicy.swift */,
 				E49C007D2C209D94003E914A /* CoreDataFeedStore.swift */,
 				E451A99E2C13269200AA1414 /* FeedStoreProtocol.swift */,
@@ -239,6 +240,21 @@
 				E49C00782C209008003E914A /* XCTestCase+FailableDeleteFeedStoreSpecs.swift .swift */,
 			);
 			path = FeedStoreSpecs;
+			sourceTree = "<group>";
+		};
+		E49C007F2C20A115003E914A /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				E49C00802C20A122003E914A /* CoreData */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		E49C00802C20A122003E914A /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		E4E3B6FA2C0F7B2400B6DDC7 /* Helpers */ = {
