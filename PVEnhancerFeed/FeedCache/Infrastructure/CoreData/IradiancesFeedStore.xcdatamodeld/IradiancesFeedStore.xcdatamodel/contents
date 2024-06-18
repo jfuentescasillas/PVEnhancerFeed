@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="ManagedCache" representedClassName="ManagedCache" syncable="YES" codeGenerationType="class">
+    <entity name="ManagedCache" representedClassName="ManagedCache" syncable="YES">
         <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="irradiancesFeed" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ManagedIrradiancesFeed" inverseName="cache" inverseEntity="ManagedIrradiancesFeed"/>
     </entity>
-    <entity name="ManagedGeometry" representedClassName="ManagedGeometry" syncable="YES" codeGenerationType="class">
+    <entity name="ManagedGeometry" representedClassName="ManagedGeometry" syncable="YES">
         <attribute name="coordinates" optional="YES" attributeType="String"/>
         <relationship name="feed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedIrradiancesFeed" inverseName="geometry" inverseEntity="ManagedIrradiancesFeed"/>
     </entity>
-    <entity name="ManagedIrradiancesFeed" representedClassName="ManagedIrradiancesFeed" syncable="YES" codeGenerationType="class">
+    <entity name="ManagedIrradiancesFeed" representedClassName="ManagedIrradiancesFeed" syncable="YES">
         <relationship name="cache" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedCache" inverseName="irradiancesFeed" inverseEntity="ManagedCache"/>
         <relationship name="geometry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedGeometry" inverseName="feed" inverseEntity="ManagedGeometry"/>
         <relationship name="properties" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedProperties" inverseName="feed" inverseEntity="ManagedProperties"/>
     </entity>
-    <entity name="ManagedParameter" representedClassName="ManagedParameter" syncable="YES" codeGenerationType="class">
+    <entity name="ManagedParameter" representedClassName="ManagedParameter" syncable="YES">
         <attribute name="allskySfcSwDiff" optional="YES" attributeType="String"/>
         <attribute name="allskySfcSwDni" optional="YES" attributeType="String"/>
         <attribute name="allskySfcSwDwn" optional="YES" attributeType="String"/>
         <relationship name="properties" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedProperties" inverseName="parameter" inverseEntity="ManagedProperties"/>
     </entity>
-    <entity name="ManagedProperties" representedClassName="ManagedProperties" syncable="YES" codeGenerationType="class">
+    <entity name="ManagedProperties" representedClassName="ManagedProperties" syncable="YES">
         <relationship name="feed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedIrradiancesFeed" inverseName="properties" inverseEntity="ManagedIrradiancesFeed"/>
         <relationship name="parameter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedParameter" inverseName="properties" inverseEntity="ManagedParameter"/>
     </entity>
