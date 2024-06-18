@@ -136,21 +136,6 @@
 			path = FeedAPI;
 			sourceTree = "<group>";
 		};
-		E427C5A72C21945A0070959C /* Infrastructure */ = {
-			isa = PBXGroup;
-			children = (
-				E427C5A82C2194660070959C /* CoreData */,
-			);
-			path = Infrastructure;
-			sourceTree = "<group>";
-		};
-		E427C5A82C2194660070959C /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = CoreData;
-			sourceTree = "<group>";
-		};
 		E451A9952C12E9CC00AA1414 /* FeedCache */ = {
 			isa = PBXGroup;
 			children = (
@@ -169,7 +154,6 @@
 		E451A99B2C13260600AA1414 /* FeedCache */ = {
 			isa = PBXGroup;
 			children = (
-				E427C5A72C21945A0070959C /* Infrastructure */,
 				E4F5D10B2C1C412000535B54 /* FeedCachePolicy.swift */,
 				E49C007D2C209D94003E914A /* CoreDataFeedStore.swift */,
 				E451A99E2C13269200AA1414 /* FeedStoreProtocol.swift */,
