@@ -26,7 +26,9 @@ class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
 
     
     func test_retrieve_deliversFoundValuesOnNonEmptyCache() throws {
+        let sut = try makeSUT()
 
+        assertThatRetrieveDeliversFoundValuesOnNonEmptyCache(on: sut)
     }
     
 

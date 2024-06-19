@@ -21,12 +21,75 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
 
     
     public func retrieve(completion: @escaping RetrievalCompletion) {
-        completion(.empty)
+        let context: NSManagedObjectContext = self.context
+        context.perform {
+            do {
+                let request: NSFetchRequest<ManagedCache> = NSFetchRequest(entityName: ManagedCache.entity().name!)
+                request.returnsObjectsAsFaults = false
+                
+                let caches: [ManagedCache] = try context.fetch(request)
+               
+                if let cache = caches.first {
+                    let irradiancesFeedSet: NSOrderedSet = cache.irradiancesFeed
+                    let managedFeeds: [ManagedIrradiancesFeed] = irradiancesFeedSet.compactMap { $0 as? ManagedIrradiancesFeed }
+                    
+                    let localFeeds: [LocalIrradiancesFeed] = managedFeeds.map { managedFeed in
+                        let geometry = Geometry(coordinates: managedFeed.geometry?.coordinates?.split(separator: ",").compactMap { Double($0) })
+                        let parameter = Parameter(
+                            allskySfcSwDiff: managedFeed.properties?.parameter?.allskySfcSwDiff,
+                            allskySfcSwDni: managedFeed.properties?.parameter?.allskySfcSwDni,
+                            allskySfcSwDwn: managedFeed.properties?.parameter?.allskySfcSwDwn
+                        )
+                        
+                        let properties = Properties(parameter: parameter)
+                       
+                        return LocalIrradiancesFeed(geometry: geometry, properties: properties)
+                    }
+                    
+                    completion(.found(feed: localFeeds, timestamp: cache.timestamp))
+                } else {
+                    completion(.empty)
+                }
+            } catch {
+                completion(.failure(error))
+            }
+        }
     }
 
     
     public func insert(_ feed: LocalIrradiancesFeed, timestamp: Date, completion: @escaping InsertionCompletion) {
-
+        let context: NSManagedObjectContext = self.context
+        context.perform {
+            do {
+                let managedCache = ManagedCache(context: context)
+                managedCache.timestamp = timestamp
+                
+                // Create ManagedIrradiancesFeed from LocalIrradiancesFeed
+                let managedFeed = ManagedIrradiancesFeed(context: context)
+                managedFeed.geometry = ManagedGeometry(context: context)
+                
+                // Convert coordinates to a comma-separated string
+                if let coordinates = feed.geometry.coordinates {
+                    managedFeed.geometry?.coordinates = coordinates.map { String($0) }.joined(separator: ",")
+                } else {
+                    managedFeed.geometry?.coordinates = nil
+                }
+                
+                managedFeed.properties = ManagedProperties(context: context)
+                managedFeed.properties?.parameter = ManagedParameter(context: context)
+                managedFeed.properties?.parameter?.allskySfcSwDiff = feed.properties.parameter?.allskySfcSwDiff
+                managedFeed.properties?.parameter?.allskySfcSwDni = feed.properties.parameter?.allskySfcSwDni
+                managedFeed.properties?.parameter?.allskySfcSwDwn = feed.properties.parameter?.allskySfcSwDwn
+                
+                managedCache.irradiancesFeed = NSOrderedSet(array: [managedFeed])
+                
+                try context.save()
+               
+                completion(nil)
+            } catch {
+                completion(error)
+            }
+        }
     }
     
 
@@ -71,18 +134,21 @@ private extension NSManagedObjectModel {
 }
 
 
+@objc(ManagedCache)
 private class ManagedCache: NSManagedObject {
     @NSManaged var timestamp: Date
     @NSManaged var irradiancesFeed: NSOrderedSet
 }
 
 
+@objc(ManagedGeometry)
 private class ManagedGeometry: NSManagedObject {
     @NSManaged var coordinates: String?
     @NSManaged var feed: ManagedIrradiancesFeed?
 }
 
 
+@objc(ManagedIrradiancesFeed)
 private class ManagedIrradiancesFeed: NSManagedObject {
     @NSManaged var cache: ManagedCache?
     @NSManaged var geometry: ManagedGeometry?
@@ -90,6 +156,7 @@ private class ManagedIrradiancesFeed: NSManagedObject {
 }
 
 
+@objc(ManagedParameter)
 private class ManagedParameter: NSManagedObject {
     @NSManaged var allskySfcSwDiff: String?
     @NSManaged var allskySfcSwDni: String?
@@ -98,6 +165,7 @@ private class ManagedParameter: NSManagedObject {
 }
 
 
+@objc(ManagedProperties)
 private class ManagedProperties: NSManagedObject {
     @NSManaged var feed: ManagedIrradiancesFeed?
     @NSManaged var parameter: ManagedParameter?
