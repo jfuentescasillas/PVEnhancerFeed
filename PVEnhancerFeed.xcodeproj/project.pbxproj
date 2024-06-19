@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E40B34F52C22D4C8001952A6 /* IradiancesFeedStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E40B34F32C22D4C8001952A6 /* IradiancesFeedStore.xcdatamodeld */; };
 		E41F33B72C09A4C900BDBFC0 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41F33B62C09A4C900BDBFC0 /* HTTPClient.swift */; };
 		E41F33B92C09A53C00BDBFC0 /* FeedItemsMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41F33B82C09A53C00BDBFC0 /* FeedItemsMapper.swift */; };
 		E42FCF452C1AC70A00BAA8B0 /* LoadFeedFromCacheUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42FCF442C1AC70A00BAA8B0 /* LoadFeedFromCacheUseCaseTests.swift */; };
@@ -24,6 +23,7 @@
 		E46B445C2BD7B39C00D7197C /* PVEnhancerLoadFeedFromRemoteUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46B445B2BD7B39C00D7197C /* PVEnhancerLoadFeedFromRemoteUseCaseTests.swift */; };
 		E46B445D2BD7B39C00D7197C /* PVEnhancerFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E47B1B222BD66F8D008DDA79 /* PVEnhancerFeed.framework */; };
 		E46B44662BD7CCC800D7197C /* RemoteFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46B44652BD7CCC800D7197C /* RemoteFeedLoader.swift */; };
+		E478E9652C22D75D004A4392 /* IrradiancesFeedStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E478E9632C22D75D004A4392 /* IrradiancesFeedStore.xcdatamodeld */; };
 		E47B1B312BD66F8D008DDA79 /* PVEnhancerFeed.h in Headers */ = {isa = PBXBuildFile; fileRef = E47B1B252BD66F8D008DDA79 /* PVEnhancerFeed.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E47B1B3B2BD66FAA008DDA79 /* IrradiancesFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B1B3A2BD66FAA008DDA79 /* IrradiancesFeed.swift */; };
 		E47B1B3E2BD66FF4008DDA79 /* IrradiancesFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B1B3D2BD66FF4008DDA79 /* IrradiancesFeedLoader.swift */; };
@@ -62,7 +62,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E40B34F42C22D4C8001952A6 /* IradiancesFeedStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IradiancesFeedStore.xcdatamodel; sourceTree = "<group>"; };
 		E41F33B62C09A4C900BDBFC0 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		E41F33B82C09A53C00BDBFC0 /* FeedItemsMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemsMapper.swift; sourceTree = "<group>"; };
 		E42FCF442C1AC70A00BAA8B0 /* LoadFeedFromCacheUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadFeedFromCacheUseCaseTests.swift; sourceTree = "<group>"; };
@@ -80,6 +79,7 @@
 		E46B445B2BD7B39C00D7197C /* PVEnhancerLoadFeedFromRemoteUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PVEnhancerLoadFeedFromRemoteUseCaseTests.swift; sourceTree = "<group>"; };
 		E46B44632BD7B4AE00D7197C /* PVEnhancerFeed.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = PVEnhancerFeed.xctestplan; sourceTree = "<group>"; };
 		E46B44652BD7CCC800D7197C /* RemoteFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedLoader.swift; sourceTree = "<group>"; };
+		E478E9642C22D75D004A4392 /* IrradiancesFeedStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IrradiancesFeedStore.xcdatamodel; sourceTree = "<group>"; };
 		E47B1B222BD66F8D008DDA79 /* PVEnhancerFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PVEnhancerFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E47B1B252BD66F8D008DDA79 /* PVEnhancerFeed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PVEnhancerFeed.h; sourceTree = "<group>"; };
 		E47B1B3A2BD66FAA008DDA79 /* IrradiancesFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrradiancesFeed.swift; sourceTree = "<group>"; };
@@ -140,7 +140,7 @@
 		E41939392C21A07F004FA1EB /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				E40B34F32C22D4C8001952A6 /* IradiancesFeedStore.xcdatamodeld */,
+				E478E9632C22D75D004A4392 /* IrradiancesFeedStore.xcdatamodeld */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -455,11 +455,11 @@
 				E41F33B92C09A53C00BDBFC0 /* FeedItemsMapper.swift in Sources */,
 				E49C007E2C209D94003E914A /* CoreDataFeedStore.swift in Sources */,
 				E46B44662BD7CCC800D7197C /* RemoteFeedLoader.swift in Sources */,
-				E40B34F52C22D4C8001952A6 /* IradiancesFeedStore.xcdatamodeld in Sources */,
 				E4B3D6392C1978590019CA60 /* LocalIrradiancesFeed.swift in Sources */,
 				E45A40B92C1C84FF0039471B /* CodableFeedStore.swift in Sources */,
 				E4F5D10C2C1C412000535B54 /* FeedCachePolicy.swift in Sources */,
 				E451A99D2C13261400AA1414 /* LocalFeedLoader.swift in Sources */,
+				E478E9652C22D75D004A4392 /* IrradiancesFeedStore.xcdatamodeld in Sources */,
 				E4B3D6372C1977140019CA60 /* RemoteIrradiancesFeedItem.swift in Sources */,
 				E47B1B3B2BD66FAA008DDA79 /* IrradiancesFeed.swift in Sources */,
 			);
@@ -794,14 +794,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		E40B34F32C22D4C8001952A6 /* IradiancesFeedStore.xcdatamodeld */ = {
+		E478E9632C22D75D004A4392 /* IrradiancesFeedStore.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				E40B34F42C22D4C8001952A6 /* IradiancesFeedStore.xcdatamodel */,
+				E478E9642C22D75D004A4392 /* IrradiancesFeedStore.xcdatamodel */,
 			);
-			currentVersion = E40B34F42C22D4C8001952A6 /* IradiancesFeedStore.xcdatamodel */;
-			name = IradiancesFeedStore.xcdatamodeld;
-			path = /Users/jfuentescasillas/Documents/ProgramacionLearner/EssentialDeveloper/FinalProject/PVEnhancer2/PVEnhancerFeed/PVEnhancerFeed/FeedCache/Infrastructure/CoreData/IradiancesFeedStore.xcdatamodeld;
+			currentVersion = E478E9642C22D75D004A4392 /* IrradiancesFeedStore.xcdatamodel */;
+			name = IrradiancesFeedStore.xcdatamodeld;
+			path = /Users/jfuentescasillas/Documents/ProgramacionLearner/EssentialDeveloper/FinalProject/PVEnhancer2/PVEnhancerFeed/PVEnhancerFeed/FeedCache/Infrastructure/CoreData/IrradiancesFeedStore.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
