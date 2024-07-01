@@ -22,8 +22,7 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
     
     // MARK: - Methods related to Retrieve data
     public func retrieve(completion: @escaping RetrievalCompletion) {
-        let context = self.context
-        context.perform {
+        perform { context in
             do {
                 if let cache = try ManagedCache.find(in: context) {
                     if let localFeed = cache.localIrradiancesFeed {
@@ -43,8 +42,7 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
     
     // MARK: - Methods related to Insert data
     public func insert(_ feed: LocalIrradiancesFeed, timestamp: Date, completion: @escaping InsertionCompletion) {
-        let context = self.context
-        context.perform {
+        perform { context in
             do {
                 let managedCache = try ManagedCache.newUniqueInstance(in: context)
                 managedCache.timestamp = timestamp
@@ -62,8 +60,7 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
 
     // MARK: - Methods related to Deletion of data
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-        let context = self.context
-        context.perform {
+        perform { context in
             do {
                 try ManagedCache.find(in: context).map(context.delete).map(context.save)
                
@@ -72,6 +69,13 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
                 completion(error)
             }
         }
+    }
+    
+    
+    // MARK: - Custom Methods
+    private func perform(_ action: @escaping (NSManagedObjectContext) -> Void) {
+        let context = self.context
+        context.perform { action(context) }
     }
 }
 
