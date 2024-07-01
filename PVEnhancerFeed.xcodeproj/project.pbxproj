@@ -158,7 +158,6 @@
 			children = (
 				E460D6DF2C31587000A13676 /* Infrastructure */,
 				E4F5D10B2C1C412000535B54 /* FeedCachePolicy.swift */,
-				E49C007D2C209D94003E914A /* CoreDataFeedStore.swift */,
 				E451A99E2C13269200AA1414 /* FeedStoreProtocol.swift */,
 				E451A99C2C13261400AA1414 /* LocalFeedLoader.swift */,
 				E4B3D6382C1978590019CA60 /* LocalIrradiancesFeed.swift */,
@@ -170,6 +169,7 @@
 		E460D6DE2C31587000A13676 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				E49C007D2C209D94003E914A /* CoreDataFeedStore.swift */,
 				E460D6DD2C31587000A13676 /* IrradiancesFeedStore.xcdatamodeld */,
 			);
 			path = CoreData;
