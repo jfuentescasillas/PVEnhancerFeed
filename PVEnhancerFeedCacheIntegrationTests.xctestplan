@@ -1,0 +1,34 @@
+{
+  "configurations" : [
+    {
+      "id" : "DEDA1A6B-1F0E-4230-A71A-2B506554224A",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:PVEnhancerFeed.xcodeproj",
+          "identifier" : "E47B1B212BD66F8D008DDA79",
+          "name" : "PVEnhancerFeed"
+        }
+      ]
+    },
+    "testExecutionOrdering" : "random"
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:PVEnhancerFeed.xcodeproj",
+        "identifier" : "E420DFE42C32C830004C9BD2",
+        "name" : "PVEnhancerFeedCacheIntegrationTests"
+      }
+    }
+  ],
+  "version" : 1
+}
