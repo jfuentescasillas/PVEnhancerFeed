@@ -20,138 +20,32 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
     }
 
     
+    // MARK: - Methods related to Retrieve data
     public func retrieve(completion: @escaping RetrievalCompletion) {
-        let context: NSManagedObjectContext = self.context
+        let context = self.context
         context.perform {
-            CoreDataFeedStore.retrieveData(context: context, completion: completion)
-        }
-    }
-
-    
-    private static func retrieveData(context: NSManagedObjectContext, completion: @escaping RetrievalCompletion) {
-        do {
-            let request: NSFetchRequest<ManagedCache> = NSFetchRequest(entityName: ManagedCache.entity().name!)
-            request.returnsObjectsAsFaults = false
-            
-            let caches: [ManagedCache] = try context.fetch(request)
-            
-            if let cache = caches.first {
-                let irradiancesFeedSet: NSOrderedSet = cache.irradiancesFeed
-                
-                if let managedFeed = irradiancesFeedSet.firstObject as? ManagedIrradiancesFeed {
-                    let localFeed = CoreDataFeedStore.mapToLocalFeed(managedFeed: managedFeed)
-                   
+            do {
+                let request = NSFetchRequest<ManagedCache>(entityName: ManagedCache.entity().name!)
+                request.returnsObjectsAsFaults = false
+             
+                if let cache = try context.fetch(request).first, let localFeed = cache.localFeed {
                     completion(.found(feed: localFeed, timestamp: cache.timestamp))
                 } else {
                     completion(.empty)
                 }
-            } else {
-                completion(.empty)
+            } catch {
+                completion(.failure(error))
             }
-        } catch {
-            completion(.failure(error))
         }
     }
     
     
-    private static func mapToLocalFeed(managedFeed: ManagedIrradiancesFeed) -> LocalIrradiancesFeed {
-        let coordinates: [Double]? = managedFeed.geometry?.coordinates?.split(separator: ",").compactMap { Double($0) }
-        
-        let allskySfcSwDni: [String: Double]? = managedFeed.properties?.parameter?.allskySfcSwDni?.split(separator: ",").reduce(into: [String: Double]()) { dict, entry in
-            let keyValue = entry.split(separator: ":")
-            
-            if keyValue.count == 2, let key = keyValue.first, let value = Double(keyValue.last!) {
-                dict[String(key)] = value
-            }
-        }
-        
-        let allskySfcSwDwn: [String: Double]? = managedFeed.properties?.parameter?.allskySfcSwDwn?.split(separator: ",").reduce(into: [String: Double]()) { dict, entry in
-            let keyValue = entry.split(separator: ":")
-           
-            if keyValue.count == 2, let key = keyValue.first, let value = Double(keyValue.last!) {
-                dict[String(key)] = value
-            }
-        }
-        
-        let allskySfcSwDiff: [String: Double]? = managedFeed.properties?.parameter?.allskySfcSwDiff?.split(separator: ",").reduce(into: [String: Double]()) { dict, entry in
-            let keyValue = entry.split(separator: ":")
-           
-            if keyValue.count == 2, let key = keyValue.first, let value = Double(keyValue.last!) {
-                dict[String(key)] = value
-            }
-        }
-        
-        let parameter: Parameter = Parameter(
-            allskySfcSwDni: allskySfcSwDni,
-            allskySfcSwDwn: allskySfcSwDwn,
-            allskySfcSwDiff: allskySfcSwDiff)
-        let properties: Properties = Properties(parameter: parameter)
-        let geometry: Geometry = Geometry(coordinates: coordinates)
-        
-        return LocalIrradiancesFeed(geometry: geometry, properties: properties)
-    }
-    
-    
-    private static func parseStringToDictionary(_ string: String?) -> [String: Double]? {
-        guard let string else { return nil }
-        
-        let keyValuePairs = string.split(separator: ",").compactMap { pair -> (String, Double)? in
-            let components = pair.split(separator: ":")
-           
-            if components.count == 2,
-               let key = components.first?.trimmingCharacters(in: .whitespaces),
-               let valueString = components.last?.trimmingCharacters(in: .whitespaces),
-               let value = Double(valueString) {
-                return (key, value)
-            }
-            
-            return nil
-        }
-        
-        return Dictionary(uniqueKeysWithValues: keyValuePairs)
-    }
-    
-    
+    // MARK: - Methods related to Insert data
     public func insert(_ feed: LocalIrradiancesFeed, timestamp: Date, completion: @escaping InsertionCompletion) {
-        let context: NSManagedObjectContext = self.context
+        let context = self.context
         context.perform {
             do {
-                let request: NSFetchRequest<ManagedCache> = NSFetchRequest(entityName: ManagedCache.entity().name!)
-                request.returnsObjectsAsFaults = false
-
-                // Delete existing cache
-                if let existingCache = try context.fetch(request).first {
-                    context.delete(existingCache)
-                }
-
-                // Create new cache
-                let managedCache = ManagedCache(context: context)
-                managedCache.timestamp = timestamp
-                
-                // Map LocalIrradiancesFeed to ManagedIrradiancesFeed
-                let managedFeed = ManagedIrradiancesFeed(context: context)
-                
-                // Mapping geometry
-                let managedGeometry = ManagedGeometry(context: context)
-                managedGeometry.coordinates = feed.geometry.coordinates?.map { String($0) }.joined(separator: ",")
-                managedFeed.geometry = managedGeometry
-                
-                // Mapping properties and parameter
-                let managedProperties = ManagedProperties(context: context)
-                let managedParameter = ManagedParameter(context: context)
-                
-                managedParameter.allskySfcSwDiff = feed.properties.parameter?.allskySfcSwDiff?.map { "\($0.key):\($0.value)" }.joined(separator: ",")
-                managedParameter.allskySfcSwDni = feed.properties.parameter?.allskySfcSwDni?.map { "\($0.key):\($0.value)" }.joined(separator: ",")
-                managedParameter.allskySfcSwDwn = feed.properties.parameter?.allskySfcSwDwn?.map { "\($0.key):\($0.value)" }.joined(separator: ",")
-                
-                managedProperties.parameter = managedParameter
-                managedFeed.properties = managedProperties
-                
-                managedCache.irradiancesFeed = NSOrderedSet(object: managedFeed)
-                
-                // Save context
-                try context.save()
-                
+                try ManagedCache.insert(feed, timestamp: timestamp, in: context)
                 completion(nil)
             } catch {
                 completion(error)
@@ -160,12 +54,14 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
     }
     
 
+    // MARK: - Methods related to Deletion of data
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
 
     }
 }
 
 
+// MARK: - Extension. NSPersistentContainer
 private extension NSPersistentContainer {
     enum LoadingError: Swift.Error {
         case modelNotFound
@@ -192,6 +88,7 @@ private extension NSPersistentContainer {
 }
 
 
+// MARK: - Extension. NSManagedObjectModel
 private extension NSManagedObjectModel {
     static func with(name: String, in bundle: Bundle) -> NSManagedObjectModel? {
         return bundle
@@ -201,10 +98,28 @@ private extension NSManagedObjectModel {
 }
 
 
+// MARK: - Managed classes
 @objc(ManagedCache)
 private class ManagedCache: NSManagedObject {
     @NSManaged var timestamp: Date
     @NSManaged var irradiancesFeed: NSOrderedSet
+    
+    var localFeed: LocalIrradiancesFeed? {
+        guard let managedFeed = irradiancesFeed.firstObject as? ManagedIrradiancesFeed else {
+            return nil
+        }
+        
+        return managedFeed.local
+    }
+
+    
+    static func insert(_ feed: LocalIrradiancesFeed, timestamp: Date, in context: NSManagedObjectContext) throws {
+        let managedCache = ManagedCache(context: context)
+        managedCache.timestamp = timestamp
+        managedCache.irradiancesFeed = NSOrderedSet(object: ManagedIrradiancesFeed.insert(feed, in: context))
+     
+        try context.save()
+    }
 }
 
 
@@ -212,6 +127,24 @@ private class ManagedCache: NSManagedObject {
 private class ManagedGeometry: NSManagedObject {
     @NSManaged var coordinates: String?
     @NSManaged var feed: ManagedIrradiancesFeed?
+    
+    var local: Geometry {
+        let coordinatesArray = coordinates?.split(separator: ",").compactMap { Double($0) }
+        
+        return Geometry(coordinates: coordinatesArray)
+    }
+    
+    
+    static func insert(_ geometry: Geometry?, in context: NSManagedObjectContext) -> ManagedGeometry? {
+        guard let geometry = geometry else {
+            return nil
+        }
+        
+        let managedGeometry = ManagedGeometry(context: context)
+        managedGeometry.coordinates = geometry.coordinates?.map { String($0) }.joined(separator: ",")
+        
+        return managedGeometry
+    }
 }
 
 
@@ -220,6 +153,23 @@ private class ManagedIrradiancesFeed: NSManagedObject {
     @NSManaged var cache: ManagedCache?
     @NSManaged var geometry: ManagedGeometry?
     @NSManaged var properties: ManagedProperties?
+    
+    var local: LocalIrradiancesFeed {
+        let localIrrFeed = LocalIrradiancesFeed(
+            geometry: geometry!.local,
+            properties: properties!.local)
+        
+        return localIrrFeed
+    }
+    
+    
+    static func insert(_ feed: LocalIrradiancesFeed, in context: NSManagedObjectContext) -> ManagedIrradiancesFeed {
+        let managedFeed = ManagedIrradiancesFeed(context: context)
+        managedFeed.geometry = ManagedGeometry.insert(feed.geometry, in: context)
+        managedFeed.properties = ManagedProperties.insert(feed.properties, in: context)
+       
+        return managedFeed
+    }
 }
 
 
@@ -229,6 +179,30 @@ private class ManagedParameter: NSManagedObject {
     @NSManaged var allskySfcSwDni: String?
     @NSManaged var allskySfcSwDwn: String?
     @NSManaged var properties: ManagedProperties?
+    
+    var local: Parameter {
+        let localParameter = Parameter(
+            allskySfcSwDni: allskySfcSwDni?.toDictionary(),
+            allskySfcSwDwn: allskySfcSwDwn?.toDictionary(),
+            allskySfcSwDiff: allskySfcSwDiff?.toDictionary()
+        )
+        
+        return localParameter
+    }
+    
+    
+    static func insert(_ parameter: Parameter?, in context: NSManagedObjectContext) -> ManagedParameter? {
+        guard let parameter = parameter else {
+            return nil
+        }
+        
+        let managedParameter = ManagedParameter(context: context)
+        managedParameter.allskySfcSwDni = parameter.allskySfcSwDni?.toString()
+        managedParameter.allskySfcSwDwn = parameter.allskySfcSwDwn?.toString()
+        managedParameter.allskySfcSwDiff = parameter.allskySfcSwDiff?.toString()
+        
+        return managedParameter
+    }
 }
 
 
@@ -236,4 +210,45 @@ private class ManagedParameter: NSManagedObject {
 private class ManagedProperties: NSManagedObject {
     @NSManaged var feed: ManagedIrradiancesFeed?
     @NSManaged var parameter: ManagedParameter?
+    
+    var local: Properties {
+        return Properties(parameter: parameter?.local)
+    }
+    
+    
+    static func insert(_ properties: Properties?, in context: NSManagedObjectContext) -> ManagedProperties? {
+        guard let properties = properties else {
+            return nil
+        }
+        
+        let managedProperties = ManagedProperties(context: context)
+        managedProperties.parameter = ManagedParameter.insert(properties.parameter, in: context)
+        
+        return managedProperties
+    }
+}
+
+
+// MARK: - Extension. Dictionary
+private extension Dictionary where Key == String, Value == Double {
+    func toString() -> String {
+        return self.map { "\($0.key):\($0.value)" }.joined(separator: ",")
+    }
+}
+
+
+// MARK: - Extension. String
+private extension String {
+    func toDictionary() -> [String: Double]? {
+        let pairs = self.split(separator: ",").map { $0.split(separator: ":") }
+        var dictionary = [String: Double]()
+      
+        for pair in pairs {
+            if pair.count == 2, let value = Double(pair[1]) {
+                dictionary[String(pair[0])] = value
+            }
+        }
+       
+        return dictionary
+    }
 }
