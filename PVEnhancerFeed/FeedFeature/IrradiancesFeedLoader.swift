@@ -9,11 +9,8 @@
 import Foundation
 
 
-// MARK: - LoadIrradiancesFeedResult Enum
-public enum LoadIrradiancesFeedResult {
-    case success(IrradiancesFeed)
-    case failure(Error)
-}
+// MARK: - LoadIrradiancesFeedResult 
+public typealias LoadIrradiancesFeedResult = Result<IrradiancesFeed, Error>
 
 
 // MARK: - IrradiancesFeedLoader Protocol

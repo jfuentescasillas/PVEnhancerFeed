@@ -106,9 +106,6 @@ final class PVEnhancerFeedCacheIntegrationTests: XCTestCase {
                 
             case let .failure(error):
                 XCTFail("Expected successful feed result, got \(error) instead", file: file, line: line)
-                
-            @unknown default:
-                XCTFail("Received an unknown result", file: file, line: line)
             }
             
             exp.fulfill()
