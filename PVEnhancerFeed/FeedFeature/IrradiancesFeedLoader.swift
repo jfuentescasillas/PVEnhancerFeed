@@ -9,11 +9,9 @@
 import Foundation
 
 
-// MARK: - LoadIrradiancesFeedResult 
-public typealias LoadIrradiancesFeedResult = Result<IrradiancesFeed, Error>
-
-
 // MARK: - IrradiancesFeedLoader Protocol
 public protocol IrradiancesFeedLoaderProtocol {
-    func load(completion: @escaping (LoadIrradiancesFeedResult) -> Void)
+    typealias Result = Swift.Result<IrradiancesFeed, Error>
+    
+    func load(completion: @escaping (Result) -> Void)
 }

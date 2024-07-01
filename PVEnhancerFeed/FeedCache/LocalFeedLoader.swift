@@ -52,7 +52,7 @@ extension LocalFeedLoader {
 
 // MARK: - Extension. Load
 extension LocalFeedLoader: IrradiancesFeedLoaderProtocol {
-    public typealias LoadResult = LoadIrradiancesFeedResult
+    public typealias LoadResult = IrradiancesFeedLoaderProtocol.Result
     
     
     public func load(completion: @escaping (LoadResult) -> Void) {

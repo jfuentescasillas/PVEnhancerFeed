@@ -26,7 +26,7 @@ class PVEnhancerAPIEndToEndTests: XCTestCase {
     
     
     // MARK: - Helpers
-    private func getFeedResult(file: StaticString = #filePath, line: UInt = #line) -> LoadIrradiancesFeedResult? {
+    private func getFeedResult(file: StaticString = #filePath, line: UInt = #line) -> IrradiancesFeedLoaderProtocol.Result? {
         let testServerURL = URL(string: "https://power.larc.nasa.gov/api/temporal/climatology/point?latitude=42.63&longitude=-3.88&community=re&parameters=ALLSKY_SFC_SW_DNI,ALLSKY_SFC_SW_DIFF,ALLSKY_SFC_SW_DWN&format=json")!
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
         let loader = RemoteFeedLoader(url: testServerURL, client: client)
@@ -35,7 +35,7 @@ class PVEnhancerAPIEndToEndTests: XCTestCase {
         trackForMemoryLeaks(client, file: file, line: line)
         
         let exp = expectation(description: "Wait for load completion")
-        var receivedResult: LoadIrradiancesFeedResult?
+        var receivedResult: IrradiancesFeedLoaderProtocol.Result?
         
         loader.load { result in
             receivedResult = result
