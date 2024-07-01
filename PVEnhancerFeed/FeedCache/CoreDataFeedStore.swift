@@ -25,11 +25,12 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
         let context = self.context
         context.perform {
             do {
-                let request = NSFetchRequest<ManagedCache>(entityName: ManagedCache.entity().name!)
-                request.returnsObjectsAsFaults = false
-             
-                if let cache = try context.fetch(request).first, let localFeed = cache.localFeed {
-                    completion(.found(feed: localFeed, timestamp: cache.timestamp))
+                if let cache = try ManagedCache.find(in: context) {
+                    if let localFeed = cache.localIrradiancesFeed {
+                        completion(.found(feed: localFeed, timestamp: cache.timestamp))
+                    } else {
+                        completion(.empty)
+                    }
                 } else {
                     completion(.empty)
                 }
@@ -46,6 +47,7 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
         context.perform {
             do {
                 try ManagedCache.insert(feed, timestamp: timestamp, in: context)
+                
                 completion(nil)
             } catch {
                 completion(error)
@@ -104,11 +106,20 @@ private class ManagedCache: NSManagedObject {
     @NSManaged var timestamp: Date
     @NSManaged var irradiancesFeed: NSOrderedSet
     
-    var localFeed: LocalIrradiancesFeed? {
+    
+    static func find(in context: NSManagedObjectContext) throws -> ManagedCache? {
+        let request = NSFetchRequest<ManagedCache>(entityName: entity().name!)
+        request.returnsObjectsAsFaults = false
+    
+        return try context.fetch(request).first
+    }
+    
+    
+    var localIrradiancesFeed: LocalIrradiancesFeed? {
         guard let managedFeed = irradiancesFeed.firstObject as? ManagedIrradiancesFeed else {
             return nil
         }
-        
+    
         return managedFeed.local
     }
 
