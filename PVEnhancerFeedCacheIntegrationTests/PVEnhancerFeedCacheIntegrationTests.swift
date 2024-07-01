@@ -58,6 +58,33 @@ final class PVEnhancerFeedCacheIntegrationTests: XCTestCase {
     }
     
     
+    func test_save_overridesItemsSavedOnASeparateInstance() {
+        let sutToPerformFirstSave = makeSUT()
+        let sutToPerformLastSave = makeSUT()
+        let sutToPerformLoad = makeSUT()
+        let firstFeed = uniqueIrradiancesFeed().model
+        let latestFeed = uniqueIrradiancesFeed().model
+        
+        let saveExp1 = expectation(description: "Wait for save completion")
+        sutToPerformFirstSave.save(firstFeed) { saveError in
+            XCTAssertNil(saveError, "Expected to save feed successfully")
+            saveExp1.fulfill()
+        }
+        
+        wait(for: [saveExp1], timeout: 1)
+        
+        let saveExp2 = expectation(description: "Wait for save completion")
+        sutToPerformLastSave.save(latestFeed) { saveError in
+            XCTAssertNil(saveError, "Expected to save feed successfully")
+            saveExp2.fulfill()
+        }
+        
+        wait(for: [saveExp2], timeout: 1)
+        
+        expect(sutToPerformLoad, toLoad: latestFeed)
+    }
+    
+    
     // MARK: Helpers
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> LocalFeedLoader {
         let storeBundle = Bundle(for: CoreDataFeedStore.self)
