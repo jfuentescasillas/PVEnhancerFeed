@@ -50,9 +50,9 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
                 
                 try context.save()
                 
-                completion(nil)
+                completion(.success(()))
             } catch {
-                completion(error)
+                completion(.failure(error))
             }
         }
     }
@@ -64,9 +64,9 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
             do {
                 try ManagedCache.find(in: context).map(context.delete).map(context.save)
                
-                completion(nil)
+                completion(.success(()))
             } catch {
-                completion(error)
+                completion(.failure(error))
             }
         }
     }
