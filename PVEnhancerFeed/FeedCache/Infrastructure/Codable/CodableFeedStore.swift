@@ -9,7 +9,7 @@
 import Foundation
 
 
-public class CodableFeedStore: FeedStoreProtocol {
+public final class CodableFeedStore: FeedStoreProtocol {
     private struct Cache: Codable {
         let feed: CodableIrradiancesFeed
         let timestamp: Date
