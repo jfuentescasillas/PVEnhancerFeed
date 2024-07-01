@@ -46,7 +46,11 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
         let context = self.context
         context.perform {
             do {
-                try ManagedCache.insert(feed, timestamp: timestamp, in: context)
+                let managedCache = try ManagedCache.newUniqueInstance(in: context)
+                managedCache.timestamp = timestamp
+                managedCache.irradiancesFeed = NSOrderedSet(object: ManagedIrradiancesFeed.insert(feed, in: context))
+                
+                try context.save()
                 
                 completion(nil)
             } catch {
@@ -112,6 +116,15 @@ private class ManagedCache: NSManagedObject {
         request.returnsObjectsAsFaults = false
     
         return try context.fetch(request).first
+    }
+    
+    
+    static func newUniqueInstance(in context: NSManagedObjectContext) throws -> ManagedCache {
+        if let existingCache = try find(in: context) {
+            context.delete(existingCache)
+        }
+      
+        return ManagedCache(context: context)
     }
     
     
