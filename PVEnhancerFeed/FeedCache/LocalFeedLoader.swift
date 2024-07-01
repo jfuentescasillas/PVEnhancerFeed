@@ -63,10 +63,10 @@ extension LocalFeedLoader: IrradiancesFeedLoaderProtocol {
             case let .failure(error):
                 completion(.failure(error))
                 
-            case let .found(feed, timestamp) where FeedCachePolicy.validate(timestamp, against: self.currentDate()):
-                completion(.success(feed.toModel()))
+            case let .success(.found(cache, timestamp)) where FeedCachePolicy.validate(timestamp, against: self.currentDate()):
+                completion(.success(cache.toModel()))
                 
-            case .found, .empty:
+            case .success:
                 completion(.success(IrradiancesFeed(geometry: .empty, properties: .empty)))
             }
         }
@@ -84,11 +84,13 @@ extension LocalFeedLoader {
             case .failure:
                 self.store.deleteCachedFeed { _ in }
                 
-            case let .found(_, timestamp) where !FeedCachePolicy.validate(timestamp, against: self.currentDate()):
+            case let .success(.found(_, timestamp)) where !FeedCachePolicy.validate(timestamp, against: self.currentDate()):
                 self.store.deleteCachedFeed { _ in }
                 
-            case .empty, .found: break
+            case .success:
+                break
             }
         }
     }
 }
+
