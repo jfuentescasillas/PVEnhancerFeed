@@ -26,12 +26,12 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
             do {
                 if let cache = try ManagedCache.find(in: context) {
                     if let localFeed = cache.localIrradiancesFeed {
-                        completion(.success(.found(feed: localFeed, timestamp: cache.timestamp)))
+                        completion(.success(CachedFeed(feed: localFeed, timestamp: cache.timestamp)))
                     } else {
-                        completion(.success(.empty))
+                        completion(.success(.none))
                     }
                 } else {
-                    completion(.success(.empty))
+                    completion(.success(.none))
                 }
             } catch {
                 completion(.failure(error))
