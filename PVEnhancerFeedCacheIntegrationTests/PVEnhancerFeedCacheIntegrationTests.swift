@@ -28,26 +28,16 @@ final class PVEnhancerFeedCacheIntegrationTests: XCTestCase {
     func test_load_deliversNoItemsOnEmptyCache() {
         let sut = makeSUT()
         
-        let exp = expectation(description: "Wait for load completion")
-        sut.load { result in
-            switch result {
-            case let .success(irradiancesFeed):
-                XCTAssertTrue(irradiancesFeed.geometry.coordinates?.isEmpty ?? true, "Expected empty coordinates")
-                XCTAssertTrue(irradiancesFeed.properties.parameter?.allskySfcSwDni?.isEmpty ?? true, "Expected empty allskySfcSwDni")
-                XCTAssertTrue(irradiancesFeed.properties.parameter?.allskySfcSwDwn?.isEmpty ?? true, "Expected empty allskySfcSwDwn")
-                XCTAssertTrue(irradiancesFeed.properties.parameter?.allskySfcSwDiff?.isEmpty ?? true, "Expected empty allskySfcSwDiff")
-
-            case let .failure(error):
-                XCTFail("Expected successful feed result, got \(error) instead")
-                        
-            @unknown default:
-                XCTFail("Received an unknown result")
-            }
-            
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        expect(sut, toLoad: IrradiancesFeed(
+            geometry: Geometry(coordinates: []),
+            properties: Properties(
+                parameter: Parameter(
+                    allskySfcSwDni: [:],
+                    allskySfcSwDwn: [:],
+                    allskySfcSwDiff: [:]
+                )
+            )
+        ))
     }
         
     
@@ -64,23 +54,7 @@ final class PVEnhancerFeedCacheIntegrationTests: XCTestCase {
         
         wait(for: [saveExp], timeout: 1)
         
-        let loadExp = expectation(description: "Wait for load completion")
-        sutToPerformLoad.load { loadResult in
-            switch loadResult {
-            case let .success(irradianceFeed):
-                XCTAssertEqual(irradianceFeed, feed)
-                
-            case let .failure(error):
-                XCTFail("Expected successful feed result, got \(error) instead")
-                
-            @unknown default:
-                XCTFail("Received an unknown result")
-            }
-            
-            loadExp.fulfill()
-        }
-        
-        wait(for: [loadExp], timeout: 1)
+        expect(sutToPerformLoad, toLoad: feed)
     }
     
     
@@ -95,6 +69,27 @@ final class PVEnhancerFeedCacheIntegrationTests: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
         
         return sut
+    }
+    
+    
+    private func expect(_ sut: LocalFeedLoader, toLoad expectedFeed: IrradiancesFeed, file: StaticString = #filePath, line: UInt = #line) {
+        let exp = expectation(description: "Wait for load completion")
+        sut.load { loadResult in
+            switch loadResult {
+            case let .success(loadedIrradianceFeed):
+                XCTAssertEqual(loadedIrradianceFeed, expectedFeed, file: file, line: line)
+                
+            case let .failure(error):
+                XCTFail("Expected successful feed result, got \(error) instead", file: file, line: line)
+                
+            @unknown default:
+                XCTFail("Received an unknown result", file: file, line: line)
+            }
+            
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1)
     }
     
     
