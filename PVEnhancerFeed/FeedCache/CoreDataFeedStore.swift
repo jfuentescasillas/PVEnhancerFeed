@@ -62,7 +62,7 @@ public final class CoreDataFeedStore: FeedStoreProtocol {
 
     // MARK: - Methods related to Deletion of data
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-
+        completion(nil)
     }
 }
 
