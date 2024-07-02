@@ -1,5 +1,5 @@
 //
-//  CoreDataFeedStore.swift
+//  CoreDataIrradiancesStore.swift
 //  PVEnhancerFeed
 //
 //  Created by jfuentescasillas on 17/06/2024.
@@ -9,7 +9,7 @@
 import CoreData
 
 
-public final class CoreDataFeedStore: FeedStoreProtocol {
+public final class CoreDataIrradiancesStore: FeedStoreProtocol {
     private let container: NSPersistentContainer
     private let context: NSManagedObjectContext
     

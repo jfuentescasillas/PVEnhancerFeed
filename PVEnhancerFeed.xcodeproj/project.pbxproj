@@ -43,7 +43,7 @@
 		E49C00772C208F64003E914A /* XCTestCase+FailableInsertFeedStoreSpecs.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = E49C00762C208F64003E914A /* XCTestCase+FailableInsertFeedStoreSpecs.swift .swift */; };
 		E49C00792C209008003E914A /* XCTestCase+FailableDeleteFeedStoreSpecs.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = E49C00782C209008003E914A /* XCTestCase+FailableDeleteFeedStoreSpecs.swift .swift */; };
 		E49C007C2C209CB2003E914A /* CoreDataFeedStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49C007B2C209CB2003E914A /* CoreDataFeedStoreTests.swift */; };
-		E49C007E2C209D94003E914A /* CoreDataFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49C007D2C209D94003E914A /* CoreDataFeedStore.swift */; };
+		E49C007E2C209D94003E914A /* CoreDataIrradiancesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49C007D2C209D94003E914A /* CoreDataIrradiancesStore.swift */; };
 		E4B3D6372C1977140019CA60 /* RemoteIrradiancesFeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B3D6362C1977140019CA60 /* RemoteIrradiancesFeedItem.swift */; };
 		E4B3D6392C1978590019CA60 /* LocalIrradiancesFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B3D6382C1978590019CA60 /* LocalIrradiancesFeed.swift */; };
 		E4E3B6FC2C0F7B3E00B6DDC7 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E3B6FB2C0F7B3E00B6DDC7 /* XCTestCase+MemoryLeakTracking.swift */; };
@@ -115,7 +115,7 @@
 		E49C00762C208F64003E914A /* XCTestCase+FailableInsertFeedStoreSpecs.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FailableInsertFeedStoreSpecs.swift .swift"; sourceTree = "<group>"; };
 		E49C00782C209008003E914A /* XCTestCase+FailableDeleteFeedStoreSpecs.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FailableDeleteFeedStoreSpecs.swift .swift"; sourceTree = "<group>"; };
 		E49C007B2C209CB2003E914A /* CoreDataFeedStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStoreTests.swift; sourceTree = "<group>"; };
-		E49C007D2C209D94003E914A /* CoreDataFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStore.swift; sourceTree = "<group>"; };
+		E49C007D2C209D94003E914A /* CoreDataIrradiancesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataIrradiancesStore.swift; sourceTree = "<group>"; };
 		E4B3D6362C1977140019CA60 /* RemoteIrradiancesFeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteIrradiancesFeedItem.swift; sourceTree = "<group>"; };
 		E4B3D6382C1978590019CA60 /* LocalIrradiancesFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalIrradiancesFeed.swift; sourceTree = "<group>"; };
 		E4E3B6FB2C0F7B3E00B6DDC7 /* XCTestCase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
@@ -218,7 +218,7 @@
 		E460D6DE2C31587000A13676 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				E49C007D2C209D94003E914A /* CoreDataFeedStore.swift */,
+				E49C007D2C209D94003E914A /* CoreDataIrradiancesStore.swift */,
 				E420DFD02C32B799004C9BD2 /* CoreDataHelpers.swift */,
 				E460D6DD2C31587000A13676 /* IrradiancesFeedStore.xcdatamodeld */,
 				E420DFD62C32B9C7004C9BD2 /* ManagedClasses */,
@@ -548,7 +548,7 @@
 				E41F33B92C09A53C00BDBFC0 /* FeedItemsMapper.swift in Sources */,
 				E420DFD82C32B9E0004C9BD2 /* ManagedCache.swift in Sources */,
 				E420DFD12C32B799004C9BD2 /* CoreDataHelpers.swift in Sources */,
-				E49C007E2C209D94003E914A /* CoreDataFeedStore.swift in Sources */,
+				E49C007E2C209D94003E914A /* CoreDataIrradiancesStore.swift in Sources */,
 				E46B44662BD7CCC800D7197C /* RemoteFeedLoader.swift in Sources */,
 				E420DFE02C32BBE3004C9BD2 /* ManagedProperties.swift in Sources */,
 				E420DFDA2C32BA83004C9BD2 /* ManagedGeometry.swift in Sources */,
