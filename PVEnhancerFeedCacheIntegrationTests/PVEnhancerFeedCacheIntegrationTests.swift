@@ -25,10 +25,10 @@ final class PVEnhancerFeedCacheIntegrationTests: XCTestCase {
     }
     
     
-    func test_load_deliversNoItemsOnEmptyCache() {
-        let sut = makeSUT()
+    func test_loadFeed_deliversNoItemsOnEmptyCache() throws {
+        let feedLoader = try makeFeedLoader()
         
-        expect(sut, toLoad: IrradiancesFeed(
+        expect(feedLoader, toLoad: IrradiancesFeed(
             geometry: Geometry(coordinates: []),
             properties: Properties(
                 parameter: Parameter(
@@ -41,36 +41,36 @@ final class PVEnhancerFeedCacheIntegrationTests: XCTestCase {
     }
         
     
-    func test_load_deliversItemsSavedOnASeparateInstance() {
-        let sutToPerformSave = makeSUT()
-        let sutToPerformLoad = makeSUT()
+    func test_loadFeed_deliversItemsSavedOnASeparateInstance() throws {
+        let feedLoaderToPerformSave = try makeFeedLoader()
+        let feedLoaderToPerformLoad = try makeFeedLoader()
         let feed = uniqueIrradiancesFeed().model
         
-        save(feed, with: sutToPerformSave)
+        save(feed, with: feedLoaderToPerformSave)
         
-        expect(sutToPerformLoad, toLoad: feed)
+        expect(feedLoaderToPerformLoad, toLoad: feed)
     }
     
     
-    func test_save_overridesItemsSavedOnASeparateInstance() {
-        let sutToPerformFirstSave = makeSUT()
-        let sutToPerformLastSave = makeSUT()
-        let sutToPerformLoad = makeSUT()
+    func test_saveFeed_overridesItemsSavedOnASeparateInstance() throws {
+        let feedLoaderToPerformFirstSave = try makeFeedLoader()
+        let feedLoaderToPerformLastSave = try makeFeedLoader()
+        let feedLoaderToPerformLoad = try makeFeedLoader()
         let firstFeed = uniqueIrradiancesFeed().model
         let latestFeed = uniqueIrradiancesFeed().model
         
-        save(firstFeed, with: sutToPerformFirstSave)
-        save(latestFeed, with: sutToPerformLastSave)
+        save(firstFeed, with: feedLoaderToPerformFirstSave)
+        save(latestFeed, with: feedLoaderToPerformLastSave)
         
-        expect(sutToPerformLoad, toLoad: latestFeed)
+        expect(feedLoaderToPerformLoad, toLoad: latestFeed)
     }
     
     
     // MARK: Helpers
-    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> LocalFeedLoader {
+    private func makeFeedLoader(file: StaticString = #filePath, line: UInt = #line) throws -> LocalFeedLoader {
         let storeBundle = Bundle(for: CoreDataIrradiancesStore.self)
         let storeURL = testSpecificStoreURL()
-        let store = try! CoreDataIrradiancesStore(storeURL: storeURL, bundle: storeBundle)
+        let store = try CoreDataIrradiancesStore(storeURL: storeURL, bundle: storeBundle)
         let sut = LocalFeedLoader(store: store, currentDate: Date.init)
         
         trackForMemoryLeaks(store, file: file, line: line)
