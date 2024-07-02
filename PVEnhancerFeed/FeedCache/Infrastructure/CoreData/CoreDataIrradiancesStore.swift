@@ -76,6 +76,7 @@ public final class CoreDataIrradiancesStore: FeedStoreProtocol {
             completion(Result {
                 if let cache = try ManagedCache.find(in: context) {
                     context.delete(cache)
+                   
                     try context.save()
                 }
             })
