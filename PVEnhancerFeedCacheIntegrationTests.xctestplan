@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "FC0EF4D9-19F3-43F6-8B6D-E908C8B3E24F",
+      "id" : "DEDA1A6B-1F0E-4230-A71A-2B506554224A",
       "name" : "Test Scheme Action",
       "options" : {
 
@@ -18,25 +18,11 @@
         }
       ]
     },
-    "testExecutionOrdering" : "random",
-    "threadSanitizerEnabled" : true
+    "testExecutionOrdering" : "random"
   },
   "testTargets" : [
     {
-      "target" : {
-        "containerPath" : "container:PVEnhancerFeed.xcodeproj",
-        "identifier" : "E46B44582BD7B39C00D7197C",
-        "name" : "PVEnhancerFeedTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:PVEnhancerFeed.xcodeproj",
-        "identifier" : "E4E3B7042C10B7A600B6DDC7",
-        "name" : "PVEnhancerFeedAPIEndToEndTests"
-      }
-    },
-    {
+      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:PVEnhancerFeed.xcodeproj",
         "identifier" : "E420DFE42C32C830004C9BD2",

@@ -21,7 +21,7 @@ public class RemoteFeedLoader: IrradiancesFeedLoaderProtocol {
     }
     
     
-    public typealias Result = LoadIrradiancesFeedResult
+    public typealias Result = IrradiancesFeedLoaderProtocol.Result
     
     
     public init(url: URL, client: HTTPClientProtocol) {
@@ -35,8 +35,9 @@ public class RemoteFeedLoader: IrradiancesFeedLoaderProtocol {
             guard self != nil else { return }
             
             switch result {
-            case let .success(data, response):
+            case let .success((data, response)):
                 completion(RemoteFeedLoader.map(data, from: response))
+           
             case .failure:
                 completion(.failure(Error.connectivity))
             }

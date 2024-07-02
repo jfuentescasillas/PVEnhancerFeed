@@ -7,7 +7,7 @@
 		<key>CI_macOS.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 		<key>PVEnhancerFeed.xcscheme_^#shared#^_</key>
 		<dict>
@@ -19,9 +19,19 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>PVEnhancerFeedCacheIntegrationTests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>E420DFE42C32C830004C9BD2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>E46B44582BD7B39C00D7197C</key>
 		<dict>
 			<key>primary</key>

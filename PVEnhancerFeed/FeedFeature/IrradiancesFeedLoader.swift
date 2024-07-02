@@ -9,14 +9,9 @@
 import Foundation
 
 
-// MARK: - LoadIrradiancesFeedResult Enum
-public enum LoadIrradiancesFeedResult {
-    case success(IrradiancesFeed)
-    case failure(Error)
-}
-
-
 // MARK: - IrradiancesFeedLoader Protocol
 public protocol IrradiancesFeedLoaderProtocol {
-    func load(completion: @escaping (LoadIrradiancesFeedResult) -> Void)
+    typealias Result = Swift.Result<IrradiancesFeed, Error>
+    
+    func load(completion: @escaping (Result) -> Void)
 }
