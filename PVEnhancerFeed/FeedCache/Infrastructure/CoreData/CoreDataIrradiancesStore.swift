@@ -22,16 +22,40 @@ public final class CoreDataIrradiancesStore: FeedStoreProtocol {
     
     // MARK: - Methods related to Retrieve data
     public func retrieve(completion: @escaping RetrievalCompletion) {
-        perform { context in
+        performRetrieval { result in
+                completion(result)
+            }
+    }
+    
+    
+    private func performRetrieval(completion: @escaping (Result<CachedFeed?, Error>) -> Void) {
+        perform { (context: NSManagedObjectContext) in
             do {
-                if let cache = try ManagedCache.find(in: context) {
-                    if let localFeed = cache.localIrradiancesFeed {
-                        completion(.success(CachedFeed(feed: localFeed, timestamp: cache.timestamp)))
-                    } else {
-                        completion(.success(.none))
-                    }
+                if let cache = try ManagedCache.find(in: context),
+                   let managedFeed = cache.irradiancesFeed.firstObject as? ManagedIrradiancesFeed {
+                    
+                    // Convert coordinates string to array of doubles
+                    let coordinates = managedFeed.geometry?.coordinates?.components(separatedBy: ",").compactMap { Double($0.trimmingCharacters(in: .whitespaces)) } ?? []
+                    
+                    // Retrieve parameters from ManagedParameter and convert to dictionaries
+                    let dniDict = managedFeed.properties?.parameter?.allskySfcSwDni?.toDictionary()
+                    let ghiDict = managedFeed.properties?.parameter?.allskySfcSwDwn?.toDictionary()
+                    let dhiDict = managedFeed.properties?.parameter?.allskySfcSwDiff?.toDictionary()
+                    
+                    let parameter = Parameter(
+                        allskySfcSwDni: dniDict,
+                        allskySfcSwDwn: ghiDict,
+                        allskySfcSwDiff: dhiDict
+                    )
+                    
+                    let localFeed = LocalIrradiancesFeed(
+                        geometry: Geometry(coordinates: coordinates),
+                        properties: Properties(parameter: parameter)
+                    )
+                    
+                    completion(.success(CachedFeed(feed: localFeed, timestamp: cache.timestamp)))
                 } else {
-                    completion(.success(.none))
+                    completion(.success(nil))
                 }
             } catch {
                 completion(.failure(error))

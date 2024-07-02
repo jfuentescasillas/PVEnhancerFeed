@@ -48,7 +48,7 @@ extension ManagedParameter {
 
 
 // MARK: - Extension. Dictionary
-private extension Dictionary where Key == String, Value == Double {
+public extension Dictionary where Key == String, Value == Double {
     func toString() -> String {
         return self.map { "\($0.key):\($0.value)" }.joined(separator: ",")
     }
@@ -56,7 +56,7 @@ private extension Dictionary where Key == String, Value == Double {
 
 
 // MARK: - Extension. String
-private extension String {
+public extension String {
     func toDictionary() -> [String: Double]? {
         let pairs = self.split(separator: ",").map { $0.split(separator: ":") }
         var dictionary = [String: Double]()

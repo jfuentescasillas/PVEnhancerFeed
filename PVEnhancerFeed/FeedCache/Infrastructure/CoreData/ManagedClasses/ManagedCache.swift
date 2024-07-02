@@ -53,5 +53,3 @@ extension ManagedCache {
         try context.save()
     }
 }
-
-
