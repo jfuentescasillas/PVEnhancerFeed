@@ -92,9 +92,18 @@ public final class CoreDataIrradiancesStore: FeedStoreProtocol {
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
         perform { context in
             do {
-                try ManagedCache.find(in: context).map(context.delete).map(context.save)
-               
-                completion(.success(()))
+                // Find the ManagedCache instance
+                if let cache = try ManagedCache.find(in: context) {
+                    // Delete the cache and its related ManagedIrradiancesFeed
+                    context.delete(cache)
+                    
+                    try context.save()
+                    
+                    completion(.success(()))
+                } else {
+                    // If no cache found, consider it as already deleted
+                    completion(.success(()))
+                }
             } catch {
                 completion(.failure(error))
             }
