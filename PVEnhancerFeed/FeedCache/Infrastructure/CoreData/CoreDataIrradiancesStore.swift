@@ -58,19 +58,20 @@ public final class CoreDataIrradiancesStore: FeedStoreProtocol {
     // MARK: - Methods related to Insert data
     public func insert(_ feed: LocalIrradiancesFeed, timestamp: Date, completion: @escaping InsertionCompletion) {
         perform { context in
+            guard let managedCache = try? ManagedCache.newUniqueInstance(in: context) else {
+                completion(.failure(NSError(domain: "CoreDataError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to create new unique instance of ManagedCache."])))
+                
+                return
+            }
+            
+            managedCache.timestamp = timestamp
+            
+            let managedFeed = ManagedIrradiancesFeed.insert(feed, in: context)
+            managedCache.irradiancesFeed = NSOrderedSet(object: managedFeed)
+            
             do {
-                let managedCache = try ManagedCache.newUniqueInstance(in: context)
-                managedCache.timestamp = timestamp
-                
-                // Create an ordered set with the inserted ManagedIrradiancesFeed
-                let managedFeed = ManagedIrradiancesFeed.insert(feed, in: context)
-                let orderedSet = NSOrderedSet(object: managedFeed)
-                
-                // Assign the ordered set to managedCache.irradiancesFeed
-                managedCache.irradiancesFeed = orderedSet
-                
                 try context.save()
-                
+               
                 completion(.success(()))
             } catch {
                 completion(.failure(error))
@@ -82,19 +83,18 @@ public final class CoreDataIrradiancesStore: FeedStoreProtocol {
     // MARK: - Methods related to Deletion of data
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
         perform { context in
+            guard let cache = try? ManagedCache.find(in: context) else {
+                completion(.success(()))
+                
+                return
+            }
+            
+            context.delete(cache)
+            
             do {
-                // Find the ManagedCache instance
-                if let cache = try ManagedCache.find(in: context) {
-                    // Delete the cache and its related ManagedIrradiancesFeed
-                    context.delete(cache)
-                    
-                    try context.save()
-                    
-                    completion(.success(()))
-                } else {
-                    // If no cache found, consider it as already deleted
-                    completion(.success(()))
-                }
+                try context.save()
+                
+                completion(.success(()))
             } catch {
                 completion(.failure(error))
             }
