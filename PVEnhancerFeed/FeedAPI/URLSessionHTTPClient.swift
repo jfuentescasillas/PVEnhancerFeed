@@ -24,9 +24,9 @@ public class URLSessionHTTPClient: HTTPClientProtocol {
     public func get(from url: URL, completion: @escaping (HTTPClientProtocol.Result) -> Void) {
         session.dataTask(with: url) { data, response, error in
             completion(Result {
-                if let error = error {
+                if let error {
                     throw error
-                } else if let data = data, let response = response as? HTTPURLResponse {
+                } else if let data, let response = response as? HTTPURLResponse {
                     return (data, response)
                 } else {
                     throw UnexpectedValuesRepresentation()
