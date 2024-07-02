@@ -70,7 +70,13 @@ public final class CoreDataIrradiancesStore: FeedStoreProtocol {
             do {
                 let managedCache = try ManagedCache.newUniqueInstance(in: context)
                 managedCache.timestamp = timestamp
-                managedCache.irradiancesFeed = NSOrderedSet(object: ManagedIrradiancesFeed.insert(feed, in: context))
+                
+                // Create an ordered set with the inserted ManagedIrradiancesFeed
+                let managedFeed = ManagedIrradiancesFeed.insert(feed, in: context)
+                let orderedSet = NSOrderedSet(object: managedFeed)
+                
+                // Assign the ordered set to managedCache.irradiancesFeed
+                managedCache.irradiancesFeed = orderedSet
                 
                 try context.save()
                 
