@@ -945,7 +945,7 @@
 			);
 			currentVersion = E460D6E02C31587000A13676 /* IrradiancesFeedStore.xcdatamodel */;
 			name = IrradiancesFeedStore.xcdatamodeld;
-			path = /Users/jfuentescasillas/Documents/ProgramacionLearner/EssentialDeveloper/FinalProject/PVEnhancer2/PVEnhancerFeed/PVEnhancerFeed/FeedCache/Infrastructure/CoreData/IrradiancesFeedStore.xcdatamodeld;
+			path = "IrradiancesFeedStore.xcdatamodeld";
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
