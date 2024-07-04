@@ -599,7 +599,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7B98K56955;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jfuentescasillas.PVEnhancerFeedCacheIntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -615,7 +615,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7B98K56955;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jfuentescasillas.PVEnhancerFeedCacheIntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -862,7 +862,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7B98K56955;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jfuentescasillas.PVEnhancerFeedAPIEndToEndTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -878,7 +878,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7B98K56955;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jfuentescasillas.PVEnhancerFeedAPIEndToEndTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -945,7 +945,7 @@
 			);
 			currentVersion = E460D6E02C31587000A13676 /* IrradiancesFeedStore.xcdatamodel */;
 			name = IrradiancesFeedStore.xcdatamodeld;
-			path = /Users/jfuentescasillas/Documents/ProgramacionLearner/EssentialDeveloper/FinalProject/PVEnhancer2/PVEnhancerFeed/PVEnhancerFeed/FeedCache/Infrastructure/CoreData/IrradiancesFeedStore.xcdatamodeld;
+			path = "IrradiancesFeedStore.xcdatamodeld";
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
